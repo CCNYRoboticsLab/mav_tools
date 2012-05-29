@@ -72,6 +72,8 @@ CtrlInterface::CtrlInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
   array_publisher_ = nh_mav.advertise<geometry_msgs::PoseArray>(
     "plan_array", 10);
 
+  printf("ASDFF!\n");
+
   // **** register subscribers
 
   cur_pose_subscriber_ = nh_mav.subscribe(
@@ -211,8 +213,11 @@ void CtrlInterface::cmdTimerCallback(const ros::TimerEvent& event)
 {
   boost::mutex::scoped_lock(mutex_);
 
+  printf("pub pose timer\n");
+
   if (ctrl_type_ == mav::PositionCtrl) 
   {
+    printf("pub pose\n");
     publishCmdPose();
   }
 }

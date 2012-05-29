@@ -130,10 +130,14 @@ class FlyerInterface
     CfgYawServer cfg_yaw_srv_;
     CfgCommServer cfg_comm_srv_;
 
-    // subscriber for laser pose and velocity
-    boost::shared_ptr<Synchronizer> sync_;
+    // subscriber for laser/rgbd pose and velocity
+    boost::shared_ptr<Synchronizer> laser_sync_;
+    boost::shared_ptr<Synchronizer>  rgbd_sync_;
     boost::shared_ptr<PoseStampedSubscriber>  laser_pose_subscriber_;
     boost::shared_ptr<TwistStampedSubscriber> laser_vel_subscriber_;
+    boost::shared_ptr<PoseStampedSubscriber>  rgbd_pose_subscriber_;
+    boost::shared_ptr<TwistStampedSubscriber> rgbd_vel_subscriber_;
+
 
     // subscriber for laser height
     ros::Subscriber height_subscriber_;
@@ -253,6 +257,10 @@ class FlyerInterface
 
     void laserCallback(const PoseStamped::ConstPtr  pose_msg,
                        const TwistStamped::ConstPtr twist_msg);
+    
+    void rgbdCallback(const PoseStamped::ConstPtr  pose_msg,
+                       const TwistStamped::ConstPtr twist_msg);
+
     void heightCallback(const mav_msgs::Height::ConstPtr height_msg);
 
     void cmdRollCallback(const mav_msgs::Roll::ConstPtr roll_msg);

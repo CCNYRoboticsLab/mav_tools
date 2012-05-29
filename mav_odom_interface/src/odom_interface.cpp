@@ -38,8 +38,8 @@ OdomInterface::OdomInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
 
   // **** ros subscribers
 
-  laser_pose_subscriber_ = nh_mav.subscribe(
-    "laser_pose", 1, &OdomInterface::laserPoseCallback, this);
+  rgbd_pose_subscriber_ = nh_mav.subscribe(
+    "rgbd_pose", 1, &OdomInterface::rgbdPoseCallback, this);
   imu_subscriber_ = nh_mav.subscribe(
     "imu/data", 1, &OdomInterface::imuCallback, this);
   height_subscriber_ = nh_mav.subscribe(
@@ -55,13 +55,14 @@ OdomInterface::~OdomInterface()
   ROS_INFO("Destroying QuadPoseEst"); 
 }
 
-void OdomInterface::laserPoseCallback(const PoseStamped::ConstPtr& laser_pose_msg)
+void OdomInterface::rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg)
 {
   pose_mutex_.lock();
 
-  // use x and y from laser
-  pose_.pose.position.x = laser_pose_msg->pose.position.x;
-  pose_.pose.position.y = laser_pose_msg->pose.position.y;
+  // use x, y and z from rgbd
+  pose_.pose.position.x = rgbd_pose_msg->pose.position.x;
+  pose_.pose.position.y = rgbd_pose_msg->pose.position.y;
+  pose_.pose.position.z = rgbd_pose_msg->pose.position.z;
 
   // use roll and pitch from IMU
   double roll, pitch, unused;
@@ -70,8 +71,8 @@ void OdomInterface::laserPoseCallback(const PoseStamped::ConstPtr& laser_pose_ms
   MyMatrix m_pose(q_pose);
   m_pose.getRPY(roll, pitch, unused);
 
-  // use yaw from laser
-  double yaw = tf::getYaw(laser_pose_msg->pose.orientation);
+  // use yaw from rgbd
+  double yaw = tf::getYaw(rgbd_pose_msg->pose.orientation);
 
   // combine r, p, y
   tf::Quaternion q_result;
@@ -79,7 +80,7 @@ void OdomInterface::laserPoseCallback(const PoseStamped::ConstPtr& laser_pose_ms
   tf::quaternionTFToMsg(q_result, pose_.pose.orientation);
 
   // publish with the timestamp from this message
-  pose_.header.stamp = laser_pose_msg->header.stamp;
+  pose_.header.stamp = rgbd_pose_msg->header.stamp;
   publishPose();
 
   pose_mutex_.unlock();
@@ -89,7 +90,7 @@ void OdomInterface::imuCallback (const sensor_msgs::Imu::ConstPtr& imu_msg)
 {
   pose_mutex_.lock();
 
-  // use roll and pitch from IMU, and yaw from laser
+  // use roll and pitch from IMU, and yaw from rgbd
 
   double r, p, y, unused;
 

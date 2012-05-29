@@ -13,7 +13,7 @@ interface.
     output="screen">
 
     <param name="direct_pos_ctrl" value="false"/>
-    <param name="fixed_frame" value="/map"/>
+    <param name="fixed_frame" value="/odom"/>
 
     <rosparam file="$(find city_flyer_launch)/launch/proc/costmap_params.yaml" command="load"/>
 

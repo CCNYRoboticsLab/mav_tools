@@ -42,7 +42,7 @@ class OdomInterface
     ros::Publisher  pose_publisher_;
     ros::Publisher  odom_publisher_;
 
-    ros::Subscriber laser_pose_subscriber_;
+    ros::Subscriber rgbd_pose_subscriber_;
     ros::Subscriber imu_subscriber_;
     ros::Subscriber height_subscriber_;
     tf::TransformBroadcaster tf_broadcaster_;
@@ -60,7 +60,7 @@ class OdomInterface
 
     // **** member functions
 
-    void laserPoseCallback(const PoseStamped::ConstPtr& laser_pose_msg);
+    void rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg);
     void imuCallback (const sensor_msgs::Imu::ConstPtr& imu_msg);
     void heightCallback (const mav_msgs::Height::ConstPtr& height_msg);
 

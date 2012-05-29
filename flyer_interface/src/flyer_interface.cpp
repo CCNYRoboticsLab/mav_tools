@@ -196,14 +196,24 @@ FlyerInterface::FlyerInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
   // Synchronize inputs. Topic subscriptions happen on demand in the connection callback.
   int queue_size = 5;
 
+  rgbd_pose_subscriber_.reset(new PoseStampedSubscriber(
+    nh_mav, "rgbd_pose_f", queue_size));
+  rgbd_vel_subscriber_.reset(new TwistStampedSubscriber(
+    nh_mav, "rgbd_vel_f", queue_size));
+
+  rgbd_sync_.reset(new Synchronizer(
+    SyncPolicy(queue_size), *rgbd_pose_subscriber_, *rgbd_vel_subscriber_));
+  rgbd_sync_->registerCallback(boost::bind(&FlyerInterface::rgbdCallback, this, _1, _2));
+
+
   laser_pose_subscriber_.reset(new PoseStampedSubscriber(
     nh_mav, "laser_pose_f", queue_size));
   laser_vel_subscriber_.reset(new TwistStampedSubscriber(
     nh_mav, "laser_vel_f", queue_size));
 
-  sync_.reset(new Synchronizer(
+  laser_sync_.reset(new Synchronizer(
     SyncPolicy(queue_size), *laser_pose_subscriber_, *laser_vel_subscriber_));
-  sync_->registerCallback(boost::bind(&FlyerInterface::laserCallback, this, _1, _2));
+  laser_sync_->registerCallback(boost::bind(&FlyerInterface::laserCallback, this, _1, _2));
 
   height_subscriber_ = nh_mav.subscribe(
     "laser_height_f", 10, &FlyerInterface::heightCallback, this);
@@ -350,6 +360,35 @@ void FlyerInterface::laserCallback(
   comm_.sendPacket(MAV_POSE2D_PKT_ID, packet);
 }
 
+void FlyerInterface::rgbdCallback(
+  const PoseStamped::ConstPtr  pose_msg,
+  const TwistStamped::ConstPtr twist_msg)
+{
+  ROS_INFO("VO Callback function");
+  MAV_POSE2D_PKT packet_2d;
+  MAV_HEIGHT_PKT packet_z;
+  
+  //**** fills packet_2d
+  packet_2d.x = pose_msg->pose.position.x;
+  packet_2d.y = pose_msg->pose.position.y;
+
+  packet_2d.vx = twist_msg->twist.linear.x;
+  packet_2d.vy = twist_msg->twist.linear.y;
+
+  packet_2d.yaw = tf::getYaw(pose_msg->pose.orientation);
+  normalizeSIAngle2Pi(&packet_2d.yaw);
+  
+  //**** fills packet_z
+  packet_z.z  = pose_msg->pose.position.z;
+  packet_z.vz = twist_msg->twist.linear.z;
+
+  ROS_DEBUG("Sending MAV_POSE2D_PKT packet");
+  comm_.sendPacket(MAV_POSE2D_PKT_ID, packet_2d);
+
+  ROS_DEBUG("Sending MAV_HEIGHT_PKT packet");
+  comm_.sendPacket(MAV_HEIGHT_PKT_ID, packet_z);
+}
+
 void FlyerInterface::cmdPoseCallback(const geometry_msgs::PoseStamped::ConstPtr cmd_pose_msg)
 {
   // TODO
@@ -415,6 +454,7 @@ void FlyerInterface::cmdVelCallback(const geometry_msgs::TwistStamped::ConstPtr 
   ROS_DEBUG("Sending MAV_DES_VEL_PKT packet");
   comm_.sendPacket(MAV_DES_VEL_PKT_ID, des_vel_pkt);
 }
+
 
 void FlyerInterface::heightCallback(const mav_msgs::Height::ConstPtr height_msg)
 {
