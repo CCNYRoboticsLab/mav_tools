@@ -5,7 +5,7 @@ recorded in a bag file.
 
 <launch>
 
-  <arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/hallway_5th_floor_02.bag"/>
+  <arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/hallway_01.bag"/>
 
   #### Nodelet manager #########################################################
 

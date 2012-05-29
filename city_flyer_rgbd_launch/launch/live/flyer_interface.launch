@@ -7,9 +7,9 @@ all messages up and down via serial port.
   <node pkg="flyer_interface" type="flyer_interface_node" name="flyer_interface" 
     output="screen">
 
-    <param name="publish_pose"   value="false"/>
+    <param name="publish_pose"   value="true"/>
     <param name="publish_debug"  value="true"/>
-
+    <remap from="/mav/pose"   to= "/mav/pose_kf"/>
     ## serial comm parameters #################
 
     <param name="comm/baudrate" value="460800"/>
@@ -90,15 +90,15 @@ all messages up and down via serial port.
 
     <param name="q_x"  value="0.083"/>
     <param name="r_x"  value="2.000"/>
-    <param name="r_vx" value="2.000"/>
+    <param name="r_vx" value="10.000"/>
 
     <param name="q_y"  value="0.083"/>
     <param name="r_y"  value="2.000"/>
-    <param name="r_vy" value="2.000"/>
+    <param name="r_vy" value="10.000"/>
 
-    <param name="q_z"    value="100.000"/>
-    <param name="r_z"    value="0.001"/>
-    <param name="r_vz"   value="0.001"/>
+    <param name="q_z"    value="10.83"/>
+    <param name="r_z"    value="2.000"/>
+    <param name="r_vz"   value="20.00"/>
     <param name="r_vz_p" value="2000.000"/>
 
   </node>

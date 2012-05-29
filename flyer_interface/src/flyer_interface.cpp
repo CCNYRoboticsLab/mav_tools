@@ -271,7 +271,7 @@ void FlyerInterface::initializeParams()
   if (!nh_private_.getParam ("base_frame", base_frame_))
     base_frame_ = "/base_link";
   if (!nh_private_.getParam ("publish_pose", publish_pose_))
-    publish_pose_ = false;
+    publish_pose_ = true;
   if (!nh_private_.getParam ("publish_debug", publish_debug_))
     publish_debug_ = false;
 

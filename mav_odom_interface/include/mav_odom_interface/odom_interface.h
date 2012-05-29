@@ -10,7 +10,7 @@
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/TwistStamped.h>
-
+#include <nav_msgs/Path.h>
 #include <mav_msgs/Height.h>
 
 namespace mav {
@@ -41,17 +41,21 @@ class OdomInterface
     ros::NodeHandle nh_private_;
     ros::Publisher  pose_publisher_;
     ros::Publisher  odom_publisher_;
-
+    ros::Publisher  path_pub_;           
+    
     ros::Subscriber rgbd_pose_subscriber_;
     ros::Subscriber imu_subscriber_;
     ros::Subscriber height_subscriber_;
     tf::TransformBroadcaster tf_broadcaster_;
+
+    nav_msgs::Path path_msg_;
 
     // **** parameters
 
     std::string base_frame_;
     std::string fixed_frame_;
     std::string fixed_frame_vo_;
+    bool use_vo_yaw_;
 
     // **** state variables
 
@@ -60,6 +64,8 @@ class OdomInterface
     PoseStamped pose_;
     tf::Transform odom2base_;
     tf::Quaternion curr_imu_q_;
+    
+    tf::Transform odomvo2base_prev_;
 
     // **** member functions
 
@@ -68,6 +74,7 @@ class OdomInterface
     void heightCallback (const mav_msgs::Height::ConstPtr& height_msg);
 
     void publishPose();
+    void publishPath();
 };
 
 } // namespace mav
