@@ -1,0 +1,14 @@
+<package>
+  <description brief="city_flyer_launch">
+
+     city_flyer_launch
+
+  </description>
+  <author>Ivan Dryanovski</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/city_flyer_launch</url>
+
+</package>
+
+

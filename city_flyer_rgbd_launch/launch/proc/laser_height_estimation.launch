@@ -1,0 +1,72 @@
+<launch>
+
+  #### Laser Scan Splitter #######################################
+
+<!--
+  <node pkg="nodelet" type="nodelet" name="LaserScanSplitterNodelet" 
+    args="load laser_scan_splitter/LaserScanSplitterNodelet pelican_manager" 
+    output="screen">
+-->
+
+  <node pkg="laser_scan_splitter" type="laser_scan_splitter_node" 
+    name="laser_scan_splitter" output="screen">
+
+<!--
+    <param name="sizes"  type="string" value="20 36 1024"/>
+    <param name="topics" type="string" value="scan_virtual_right scan_margin scan_virtual_middle_unf"/>
+    <param name="frames" type="string" value="/rvl /laser /laser"/>
+-->
+<!--
+    <param name="sizes"  type="string" value="1 19 36 968 36 20"/>
+    <param name="topics" type="string" value="scan_margin scan_virtual_right scan_margin scan_virtual_middle_unf scan_margin2 scan_margin3"/>
+    <param name="frames" type="string" value="/laser /rvl /laser /laser /laser /laser"/>
+
+-->
+    <param name="sizes"  type="string" value="20 36 968 36 20"/>
+    <param name="topics" type="string" value="scan_virtual_right scan_margin scan_virtual_middle_unf scan_margin2 scan_margin3"/>
+    <param name="frames" type="string" value="/rvl /laser /laser /laser /laser"/>
+
+
+  </node>
+
+  #### Laser Height Estimation ###################################
+
+<!--
+  <node pkg="nodelet" type="nodelet" name="LaserHeightEstimationNodelet" 
+    args="load laser_height_estimation/LaserHeightEstimationNodelet pelican_manager" 
+    output="screen">
+-->
+
+  <node pkg="laser_height_estimation" type="laser_height_estimation_node" 
+    name="laser_height_estimation_node" output="screen">
+
+    <remap from="/scan" to="/scan_virtual_right"/>
+
+    <param name="fixed_frame"     value="/odom"/>
+    <param name="base_frame"      value="/base_link"/>
+    <param name="footprint_frame" value="/base_footprint"/>
+
+    <param name="max_height_jump" value="0.15"/>
+    <param name="max_stdev"       value="0.03"/>
+    <param name="min_values"      value="5"/>
+    <param name="bin_size"        value="0.05"/>
+
+    <param name="use_imu"         value="false"/>
+    <param name="use_segmentation" value="true"/>
+
+  </node>
+
+  #### AB filter ###########################################################
+  # TODO: nodelet?
+
+  <node pkg="ab_filter" type="ab_filter_height_node" 
+    name="ab_filter_height" output="screen">
+
+    <remap from="/mav/laser_height"  to="/mav/height_to_base"/>
+
+    <param name="alpha" value="0.8"/>
+    <param name="beta"  value="0.2"/>
+
+  </node>
+
+</launch>

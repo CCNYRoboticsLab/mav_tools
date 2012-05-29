@@ -1,0 +1,48 @@
+<launch>
+
+  #### Asctec Autopilot ###################################
+
+  <!--node pkg="nodelet" type="nodelet" name="AutoPilotNodelet" 
+    args="load asctec_autopilot/AutoPilotNodelet pelican_manager" output="screen"-->
+
+  <node pkg="asctec_autopilot" type="autopilot_node" name="autopilot">
+    <remap from="/asctec/ESTOP" to="/mav/estop"/>  
+
+    <param name="port" type="string" value="/dev/ttyUSB0"/>
+    <param name="speed" type="int" value="57600"/>
+
+    <param name="freq" type="double" value="40.0"/>
+
+    <param name="enable_IMU_CALCDATA" type="bool" value="true"/>
+    <param name="interval_IMU_CALCDATA" type="int" value="1"/>
+    <param name="offset_IMU_CALCDATA" type="int" value="0"/>
+
+    <param name="enable_LL_STATUS" type="bool" value="true"/>
+    <param name="interval_LL_STATUS" type="int" value="2"/>
+    <param name="offset_LL_STATUS" type="int" value="0"/>
+
+    <param name="enable_CONTROL" type="bool" value="true"/>
+    <param name="interval_CONTROL" type="int" value="1"/>
+    <param name="offset_CONTROL" type="int" value="1"/>
+  </node>
+
+  #### Asctec Proc ########################################
+
+  <!--node pkg="nodelet" type="nodelet" name="AsctecProcNodelet" 
+    args="load asctec_proc/AsctecProcNodelet pelican_manager" output="screen"-->
+
+  <node pkg="asctec_proc" type="asctec_proc_node" name="asctec_proc">
+
+    <param name="enable_state_changes" type="bool" value="true"/>
+    <param name="enable_ctrl_thrust" type="bool" value="true"/>
+    <param name="enable_ctrl_roll"   type="bool" value="false"/>
+    <param name="enable_ctrl_pitch"  type="bool" value="false"/>
+    <param name="enable_ctrl_yaw"    type="bool" value="true"/>
+
+    <param name="max_ctrl_thrust" value="2800"/>
+    <param name="max_ctrl_roll" value="1000"/>
+    <param name="max_ctrl_pitch" value="1000"/>
+
+  </node>
+
+</launch>

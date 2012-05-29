@@ -1,0 +1,6 @@
+<launch>
+
+  <node pkg="rxtools" type="rxplot" name="plot" 
+    args="/mav/pose/pose/position/x,/mav/cmd/pose/pose/position/x, /mav/debug/pitch/data,/mav/debug/cmd/pitch/data, /mav/debug/pid/x_i_term/data"/>
+
+</launch>

@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg="rxtools" type="rxplot" name="plot_xyz" 
+    args="/mav/pose/pose/position/x:y:z,/mav/cmd/pose/pose/position/x:y:z"/>
+
+  <node pkg="rxtools" type="rxplot" name="plot_xyz_3d" 
+    args="-M 3d /mav/pose/pose/position/x:y:z"/>
+
+</launch>

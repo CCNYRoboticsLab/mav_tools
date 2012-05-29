@@ -1,0 +1,32 @@
+<!--
+Launches the entire CityFlyer system, and records the unprocessed
+data to a bag file.
+-->
+
+<launch>
+
+  <arg name="bag_name"/>
+
+  #### Nodelet manager #########################################################
+
+  <node pkg="nodelet" type="nodelet" name="pelican_manager" 
+    args="manager" output="screen" />
+
+  #### Data Aquisition #########################################################
+
+  <include file="$(find city_flyer_launch)/launch/live/livedata.launch"/>
+
+  #### Data Recording ##########################################################
+
+  <include file="$(find city_flyer_launch)/launch/misc/record_livedata.launch">
+    <arg name="bag_name" value="$(arg bag_name)" />
+  </include>
+
+  #### Data Processing #########################################################
+
+  <include file="$(find city_flyer_launch)/launch/proc/procdata.launch"/>
+
+</launch>
+
+
+
