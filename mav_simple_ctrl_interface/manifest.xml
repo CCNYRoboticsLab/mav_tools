@@ -1,0 +1,28 @@
+<package>
+  <description brief="mav_ctrl_interface">
+
+     mav_ctrl_interface
+
+  </description>
+  <author>Ivan Dryanovski</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/mav_ctrl_interface</url>
+  <depend package="roscpp"/>
+  <depend package="mav_srvs"/>
+  <depend package="nav_msgs"/>
+  <depend package="navfn"/>
+  <depend package="costmap_2d"/>
+  <depend package="mav_common"/>
+  <depend package="nodelet"/>
+  <depend package="tf"/>
+  <depend package="geometry_msgs"/>
+
+  <export>
+    <nodelet plugin="${prefix}/mav_ctrl_interface_nodelet.xml" />
+  </export>
+
+
+</package>
+
+
