@@ -5,7 +5,7 @@ data to a bag file.
 
 <launch>
 
-  <arg name="bag_name" value="cityflier_02.bag"/>
+  <arg name="bag_name" value="lobby_01.bag"/>
 
   #### Nodelet manager #########################################################
 

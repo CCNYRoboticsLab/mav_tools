@@ -34,10 +34,10 @@ all messages up and down via serial port.
 
     #### PID height 
 
-    <param name="ctrl/pid_z/k_p"  value="20"/>
+    <param name="ctrl/pid_z/k_p"  value="17"/>
     <param name="ctrl/pid_z/k_i"  value="5"/>
     <param name="ctrl/pid_z/k_d"  value="25"/>
-    <param name="ctrl/pid_z/bias" value="48.5"/>
+    <param name="ctrl/pid_z/bias" value="50"/>
 
     <param name="ctrl/pid_vz/k_p"  value="20"/>
     <param name="ctrl/pid_vz/k_i"  value="0"/>
@@ -80,10 +80,11 @@ all messages up and down via serial port.
 
     #### PID yaw 
 
-    <param name="ctrl/pid_yaw/k_p"  value="1.2"/>
+    <param name="ctrl/pid_yaw/k_p"  value="0.5"/>
     <param name="ctrl/pid_yaw/k_i"  value="0.0"/>
     <param name="ctrl/pid_yaw/k_d"  value="0.0"/>
     <param name="ctrl/pid_yaw/bias" value="0.0"/>
+    <param name="ctrl/pid_yaw/max_err" value="0.5"/>
 
     ## kalman filter parameters #############
 
