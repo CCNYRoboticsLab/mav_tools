@@ -1,0 +1,44 @@
+<!-- 
+Sparisifies the horizontal portion of the laser scan, and 
+projects the result to the xy-plane.
+-->
+
+<launch>
+
+  #### Laser Scan Sparsifier #####################################
+
+<!--
+  <node pkg="nodelet" type="nodelet" name="LaserScanSparsifierNodelet" 
+    args="load laser_scan_sparsifier/LaserScanSparsifierNodelet pelican_manager" 
+    output="screen">
+-->
+
+  <node pkg="laser_scan_sparsifier" type="laser_scan_sparsifier_node" name="laser_scan_sparsifier" 
+    output="screen">
+
+    <remap from="scan"        to="scan_virtual_middle_unf"/>
+    <remap from="scan_sparse" to="scan_virtual_middle"/>
+
+    <param name="skip"  type="int" value="5"/>
+
+  </node>
+
+  #### Laser Scan Projector #######################################
+  # TODO: nodelet?
+
+  <node pkg="laser_ortho_projector" type="laser_ortho_projector_node" 
+    name="laser_ortho_projector" output="screen">
+
+    <remap from="imu"  to="mav/imu"/>
+    <remap from="pose" to="mav/pose"/>
+    <remap from="scan" to="scan_virtual_middle"/>
+
+    <param name="fixed_frame" type="string" value="odom"/>
+    <param name="use_pose"    type="bool"   value="true"/>
+    <param name="publish_tf"  type="bool"   value="true"/>
+
+  </node>
+
+</launch>
+
+

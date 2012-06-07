@@ -1,0 +1,22 @@
+<!--
+Launches the control interfaces, which receive commands from the various
+inputs (joystick, rviz, planners, etc) and relay that to the flyer 
+interface.
+-->
+
+<launch>
+
+  #### MAV CTRL Interface #######################################
+  #todo: nodelet?
+
+  <node pkg="mav_ctrl_interface" type="ctrl_interface_node" name="ctrl_interface" 
+    output="screen">
+
+    <param name="direct_pos_ctrl" value="false"/>
+    <param name="fixed_frame" value="/map"/>
+
+    <rosparam file="$(find city_flyer_launch)/launch/proc/costmap_params.yaml" command="load"/>
+
+  </node>
+</launch>
+

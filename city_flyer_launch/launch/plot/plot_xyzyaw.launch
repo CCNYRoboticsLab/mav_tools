@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg="rxtools" type="rxplot" name="plot_xyzyaw" 
+    args="/mav/cmd/pose/pose/position/x,/mav/pose/pose/position/x 
+          /mav/cmd/pose/pose/position/y,/mav/pose/pose/position/y
+          /mav/cmd/pose/pose/position/z,/mav/pose/pose/position/z
+          /mav/debug/cmd/yaw/data,/mav/debug/yaw/data" />
+</launch>
+

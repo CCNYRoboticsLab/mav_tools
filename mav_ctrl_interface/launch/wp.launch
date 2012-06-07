@@ -1,0 +1,27 @@
+<launch>
+
+  <node pkg="mav_ctrl_interface" type="ctrl_interface_node" name="CtrlInterface"
+    output="screen">
+
+    <param name="direct_pos_ctrl" value="false"/>
+    <param name="fixed_frame" value="/map"/>
+
+    <rosparam file="$(find mav_ctrl_interface)/launch/costmap_params.yaml" command="load"/>
+
+  </node>
+
+  <node name="map_server" pkg="map_server" type="map_server" 
+    output="screen"
+    args="/home/idryanov/ros/map1.yaml"/>
+
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" 
+    args="0 0 0 0 0 0 map base_link 100" />
+
+  <node pkg="rviz" type="rviz" name="rviz">
+
+    <remap from="/goal" to="/mav/goal2D_rviz"/>
+
+  </node>
+
+
+</launch>

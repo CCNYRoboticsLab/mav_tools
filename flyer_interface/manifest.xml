@@ -1,0 +1,28 @@
+<package>
+  <description brief="flyer_interface">
+
+     flyer_interface
+
+  </description>
+  <author>Ivan Dryanovski</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/flyer_interface</url>
+  <depend package="roscpp"/>
+  <depend package="nodelet"/>
+  <depend package="geometry_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="std_msgs"/>
+  <depend package="tf"/>
+  <depend package="dynamic_reconfigure"/>
+  <depend package="mav_msgs"/>
+  <depend package="mav_srvs"/>
+  <depend package="mav_common"/>
+  <depend package="message_filters"/>
+  <export>
+    <nodelet plugin="${prefix}/flyer_interface_nodelet.xml" />
+  </export>
+
+</package>
+
+

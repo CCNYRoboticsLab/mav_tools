@@ -1,0 +1,6 @@
+<launch>
+
+  <node pkg="rxtools" type="rxplot" name="plot" 
+    args="/mav/height_to_footprint/height,/mav/cmd_pose/pose/position/z"/>
+
+</launch>

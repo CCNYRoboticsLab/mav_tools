@@ -1,0 +1,8 @@
+<!-- Alpha-Beta Filter Height nodelet publisher -->
+<library path="lib/libab_filter_height_nodelet">
+  <class name="ab_filter/ABFilterHeightNodelet" type="ABFilterHeightNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Alpha-Beta Filter Height nodelet publisher.
+    </description>
+  </class>
+</library>

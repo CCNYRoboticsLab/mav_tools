@@ -1,0 +1,15 @@
+<!--
+Launches the odometry interface package, which is reposnsible for
+assembling all the different (partial) pose messages into a 
+6DoF pose and publishing the corresponding TF. 
+-->
+
+<launch>
+
+  <node pkg="mav_odom_interface" type="odom_interface_node" name="odom_interface" 
+    output="screen">
+
+  </node>
+
+</launch>
+

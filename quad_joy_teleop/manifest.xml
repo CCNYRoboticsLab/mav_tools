@@ -1,0 +1,25 @@
+<package>
+  <description brief="quad_joy_teleop">
+
+     quad_joy_teleop
+
+  </description>
+  <author>Ivan Dryanovski</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/quad_joy_teleop</url>
+  <depend package="roscpp"/>
+  <depend package="nodelet"/>
+  <depend package="std_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="mav_msgs"/>
+  <depend package="mav_srvs"/>
+
+  <export>
+    <nodelet plugin="${prefix}/quad_joy_teleop_nodelet.xml" />
+  </export>
+
+</package>
+
+

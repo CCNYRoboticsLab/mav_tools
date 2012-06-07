@@ -1,0 +1,20 @@
+<!--
+Launches all ROS componenets which are responsible for data
+aquisition: laser drivers, and the interface to the 
+hight level.
+-->
+
+<launch>
+
+  #### Asctec Autopilot And Proc ###############################################
+
+  <include file="$(find city_flyer_launch)/launch/live/flyer_interface.launch"/>
+
+  #### Laser ###################################################################
+
+  <include file="$(find city_flyer_launch)/launch/live/hokuyo_270deg.launch"/>
+
+</launch>
+
+
+

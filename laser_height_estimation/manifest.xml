@@ -1,0 +1,25 @@
+<package>
+  <description brief="laser_height_estimation">
+
+     A tool to measure the distance to the floor/ceiling using a a laser scanner.
+
+  </description>
+  <author>Ivan Dryanovski</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/laser_height_estimation</url>
+  <depend package="tf"/>
+  <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+  <depend package="std_msgs"/>
+  <depend package="mav_msgs"/>
+  <depend package="bullet"/>
+  <depend package="nodelet"/>
+
+  <export>
+    <nodelet plugin="${prefix}/laser_height_estimation_nodelet.xml" />
+  </export>
+
+</package>
+
+

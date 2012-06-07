@@ -1,0 +1,23 @@
+<!--
+Launches the entire CityFlyer system.
+-->
+
+<launch>
+
+  #### Nodelet manager #########################################################
+
+  <node pkg="nodelet" type="nodelet" name="pelican_manager" 
+    args="manager" output="screen" />
+
+  #### Data Aquisition #########################################################
+
+  <include file="$(find city_flyer_launch)/launch/live/livedata.launch"/>
+
+  #### Data Processing #########################################################
+
+  <include file="$(find city_flyer_launch)/launch/proc/procdata.launch"/>
+
+</launch>
+
+
+

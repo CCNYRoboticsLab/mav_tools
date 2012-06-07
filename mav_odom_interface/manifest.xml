@@ -1,0 +1,26 @@
+<package>
+  <description brief="mav_odom_interface">
+
+     mav_odom_interface
+
+  </description>
+  <author>Ivan Dryanovski</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/mav_odom_interface</url>
+  <depend package="roscpp"/>
+  <depend package="nodelet"/>
+  <depend package="tf"/>
+  <depend package="std_msgs"/>
+  <depend package="mav_msgs"/>
+  <depend package="nav_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+
+  <export>
+    <nodelet plugin="${prefix}/odom_interface_nodelet.xml" />
+  </export>
+
+</package>
+
+

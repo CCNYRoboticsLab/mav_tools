@@ -1,0 +1,8 @@
+<!-- Alpha-Beta Filter Pose nodelet publisher -->
+<library path="lib/libab_filter_pose_nodelet">
+  <class name="ab_filter/ABFilterPoseNodelet" type="ABFilterPoseNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Alpha-Beta Filter Pose nodelet publisher.
+    </description>
+  </class>
+</library>

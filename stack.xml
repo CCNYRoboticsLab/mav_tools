@@ -1,0 +1,11 @@
+<stack>
+  <description brief="Micro-air vehicle tools for ROS">Hardware-independent micro-air vehicle tools</description>
+  <author>Maintained by Ivan Dryanovski, William Morris</author>
+  <license>BSD</license>  
+  <review status="experimental" notes=""/>
+  <url>http://ros.org/wiki/mav_tools</url>
+  <depend stack="common" />
+  <depend stack="common_msgs" />
+  <depend stack="geometry" />
+  <depend stack="ros" />
+</stack>

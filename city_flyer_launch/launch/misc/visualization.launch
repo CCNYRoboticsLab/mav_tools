@@ -1,0 +1,14 @@
+<!--
+Launches RVIZ, with remapped goal topic to mav namespace
+-->
+
+<launch>
+
+  <node pkg="rviz" type="rviz" name="rviz" output="screen"
+    args="-d $(find city_flyer_launch)/launch/misc/rviz.vcg">
+
+    <remap from="/goal" to="/mav/goal2D_rviz"/>
+
+  </node>
+
+</launch>

@@ -1,0 +1,8 @@
+<!-- Quadrotor joy teleop nodelet publisher -->
+<library path="lib/libquad_joy_teleop_nodelet">
+  <class name="quad_joy_teleop/QuadJoyTeleop" type="QuadJoyTeleopNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Quadrotor joystick teleop nodelet publisher.
+    </description>
+  </class>
+</library>

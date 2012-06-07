@@ -1,0 +1,8 @@
+<!-- Flyer Interface nodelet publisher -->
+<library path="lib/libflyer_interface_nodelet">
+  <class name="flyer_interface/FlyerInterfaceNodelet" type="FlyerInterfaceNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Flyer Interface nodelet publisher.
+    </description>
+  </class>
+</library>

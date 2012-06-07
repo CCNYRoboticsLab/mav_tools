@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg="rxtools" type="rxplot" name="plot_xyzyaw" 
+    args="/mav/cmd/vel/twist/linear/x,/mav/vel/twist/linear/x 
+          /mav/cmd/vel/twist/linear/y,/mav/vel/twist/linear/y 
+          /mav/cmd/vel/twist/linear/z,/mav/vel/twist/linear/z 
+          /mav/cmd/vel/twist/angular/z,/mav/vel/twist/angular/z " />
+</launch>
+

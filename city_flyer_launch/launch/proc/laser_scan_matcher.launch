@@ -1,0 +1,65 @@
+<!-- 
+Launches the scan matcher, and filters out the pose results
+using an alpha-beta filter.
+-->
+
+<launch>
+
+  #### Scan matcher ###########################################################
+  #todo: nodelet?
+
+  <!--node pkg="nodelet" type="nodelet" name="CanonicalScanMatcherNodelet" 
+    args="load canonical_scan_matcher_xy/CanonicalScanMatcherNodelet pelican_manager" 
+    output="screen"-->
+
+  <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" 
+    name="laser_scan_matcher" output="screen">
+
+    <remap from="imu"             to="mav/imu"/>
+    <remap from="pose"            to="mav/laser_pose"/>
+    <remap from="scan"            to="scan_virtual_middle"/>
+    <remap from="cloud"           to="cloud_ortho"/>
+
+    <param name="publish_tf"           type="bool" value="false"/>
+    <param name="publish_pose"         type="bool" value="false"/>
+    <param name="publish_pose_stamped" type="bool" value="true"/>
+
+    <param name="fixed_frame"    type="string" value="odom"/>
+    <param name="base_frame"     type="string" value="base_ortho"/>
+
+    <param name="use_cloud_input" type="bool" value="true"/>
+
+    <param name="use_alpha_beta"  value="false"/>
+    <param name="use_imu"         value="true"/>
+    <param name="alpha"           value="1.0"/>
+    <param name="beta"            value="0.8"/>
+
+    <param name="max_iterations"  value="5"/>
+    <param name="epsilon_xy"      value="0.000000001"/>
+    <param name="epsilon_theta"   value="0.0000000001"/>
+
+  </node>
+
+  #### AB filter ###########################################################
+
+  <node pkg="ab_filter" type="ab_filter_pose_node" 
+    name="ab_filter_pose" output="screen">
+
+    <remap from="mav/pose"      to="mav/laser_pose"/>
+    <remap from="mav/pose_f"    to="mav/laser_pose_f"/>
+    <remap from="mav/vel_f"     to="mav/laser_vel_f"/>
+    <remap from="scan"          to="scan_virtual_middle"/>
+    <remap from="cloud"         to="cloud_ortho"/>
+
+    <remap from="mav/vel_unf"   to="mav/laser_pose_unf"/>
+    <remap from="mav/pose_unf"  to="mav/laser_vel_unf"/>
+
+    <param name="alpha"               value="0.8"/>
+    <param name="beta"                value="0.3"/>
+    <param name="publish_unfiltered"  value="true"/>
+
+  </node>
+
+</launch>
+
+

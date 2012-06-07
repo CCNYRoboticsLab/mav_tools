@@ -1,0 +1,9 @@
+<!-- MAV Odom Interface nodelet publisher -->
+<library path="lib/libodom_interface_nodelet">
+  <class name="mav_odom_interface/OdomInterfaceNodelet" type="OdomInterfaceNodelet" 
+  base_class_type="nodelet::Nodelet">
+    <description>
+      MAV Odom Interface Nodelet nodelet publisher.
+    </description>
+  </class>
+</library>

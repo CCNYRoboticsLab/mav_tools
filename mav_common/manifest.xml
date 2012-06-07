@@ -1,0 +1,19 @@
+<package>
+  <description brief="mav_common">
+
+     mav_common
+
+  </description>
+  <author>Ivan Dryanovski</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/mav_common</url>
+  <depend package="roscpp"/>
+
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lcomm_util"/>
+  </export>
+
+</package>
+
+

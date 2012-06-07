@@ -1,0 +1,9 @@
+<!-- Laser Height Estimation nodelet publisher -->
+<library path="lib/liblaser_height_estimation_nodelet">
+  <class name="laser_height_estimation/LaserHeightEstimationNodelet" 
+         type="LaserHeightEstimationNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Laser height estimation nodelet publisher.
+    </description>
+  </class>
+</library>

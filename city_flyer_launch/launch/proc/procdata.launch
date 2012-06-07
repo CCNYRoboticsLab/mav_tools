@@ -1,0 +1,44 @@
+<!--
+Launches all ROS componenets which are responsible for processing
+data: pose estimation, mapping, planning.
+-->
+
+<launch>
+
+  #### URDF model ####################################################
+
+  <include file="$(find city_flyer_launch)/launch/proc/model.launch"/>
+
+  #### Height estimation #############################################
+
+  <include file="$(find city_flyer_launch)/launch/proc/laser_height_estimation.launch"/>
+
+  #### Laser projection ##############################################
+
+  <include file="$(find city_flyer_launch)/launch/proc/laser_projection.launch"/>
+
+  #### Scan matching #################################################
+  
+  <include file="$(find city_flyer_launch)/launch/proc/laser_scan_matcher.launch"/>
+  
+  #### Pose estimation ###############################################
+
+  <include file="$(find city_flyer_launch)/launch/proc/pose_estimation.launch"/>
+
+  #### Control interface #############################################
+
+  <include file="$(find city_flyer_launch)/launch/proc/control.launch"/>
+
+  #### SLAM ##########################################################
+
+  <include file="$(find city_flyer_launch)/launch/proc/slam_gmapping.launch"/>
+
+  #### Localisation ##################################################
+<!--
+  <include file="$(find city_flyer_launch)/launch/proc/amcl.launch"/>
+-->
+
+</launch>
+
+
+

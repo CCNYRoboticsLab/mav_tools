@@ -1,0 +1,104 @@
+<!--
+Launches the interface to the HL controller, which communicates
+all messages up and down via serial port.
+-->
+
+<launch>
+  <node pkg="flyer_interface" type="flyer_interface_node" name="flyer_interface" 
+    output="screen">
+
+    <param name="publish_pose"   value="false"/>
+    <param name="publish_debug"  value="true"/>
+
+    ## serial comm parameters #################
+
+    <param name="comm/baudrate" value="460800"/>
+
+    <param name="comm/pose_period"   value="100"/>
+    <param name="comm/status_period" value="100"/>
+    <param name="comm/debug_period"  value="100"/>
+    <param name="comm/imu_period"    value="25"/>
+
+    ## general control parameters #############
+
+    <param name="ctrl/ctrl_mode_roll"     value="2"/>
+    <param name="ctrl/ctrl_mode_pitch"    value="2"/>
+    <param name="ctrl/ctrl_mode_yaw_rate" value="2"/>
+    <param name="ctrl/ctrl_mode_thrust"   value="2"/>
+
+    <param name="ctrl/cmd_roll_limit"     value="0.15"/>
+    <param name="ctrl/cmd_pitch_limit"    value="0.15"/>
+    <param name="ctrl/cmd_yaw_rate_limit" value="1.0"/>
+    <param name="ctrl/cmd_thrust_limit"   value="70.0"/>
+
+    #### PID height 
+
+    <param name="ctrl/pid_z/k_p"  value="20"/>
+    <param name="ctrl/pid_z/k_i"  value="5"/>
+    <param name="ctrl/pid_z/k_d"  value="25"/>
+    <param name="ctrl/pid_z/bias" value="48.5"/>
+
+    <param name="ctrl/pid_vz/k_p"  value="20"/>
+    <param name="ctrl/pid_vz/k_i"  value="0"/>
+    <param name="ctrl/pid_vz/k_d"  value="0"/>
+    <param name="ctrl/pid_vz/bias" value="48.3"/>
+
+    #### PID position xy
+
+    <param name="ctrl/pid_x/k_p"     value="0.4"/>
+    <param name="ctrl/pid_x/k_i"     value="0.2"/>
+    <param name="ctrl/pid_x/k_d"     value="0.7"/>
+    <param name="ctrl/pid_x/d_base"  value="2.6"/>
+    <param name="ctrl/pid_x/bias"    value="0.0"/>
+    <param name="ctrl/pid_x/max_i"   value="0.1"/>
+    <param name="ctrl/pid_x/max_err" value="0.50"/>
+
+    <param name="ctrl/pid_y/k_p"     value="0.4"/>
+    <param name="ctrl/pid_y/k_i"     value="0.2"/>
+    <param name="ctrl/pid_y/k_d"     value="0.7"/>
+    <param name="ctrl/pid_y/d_base"  value="2.6"/>
+    <param name="ctrl/pid_y/bias"    value="0.0"/>
+    <param name="ctrl/pid_y/max_i"   value="0.1"/>
+    <param name="ctrl/pid_y/max_err" value="0.50"/>
+
+    #### PID velocity 
+
+    <param name="ctrl/pid_vx/k_p"       value="0.3"/>
+    <param name="ctrl/pid_vx/k_i"       value="0.1"/>
+    <param name="ctrl/pid_vx/k_d"       value="0.0"/>
+    <param name="ctrl/pid_vx/bias"      value="-0.03"/>
+    <param name="ctrl/pid_vx/max_i"     value="0.1"/>
+    <param name="ctrl/pid_vx/max_error" value="1.0"/>
+
+    <param name="ctrl/pid_vy/k_p"       value="0.3"/>
+    <param name="ctrl/pid_vy/k_i"       value="0.1"/>
+    <param name="ctrl/pid_vy/k_d"       value="0.0"/>
+    <param name="ctrl/pid_vy/bias"      value="0.0"/>
+    <param name="ctrl/pid_vy/max_i"     value="0.1"/>
+    <param name="ctrl/pid_vy/max_error" value="1.0"/>
+
+    #### PID yaw 
+
+    <param name="ctrl/pid_yaw/k_p"  value="1.2"/>
+    <param name="ctrl/pid_yaw/k_i"  value="0.0"/>
+    <param name="ctrl/pid_yaw/k_d"  value="0.0"/>
+    <param name="ctrl/pid_yaw/bias" value="0.0"/>
+
+    ## kalman filter parameters #############
+
+    <param name="q_x"  value="0.083"/>
+    <param name="r_x"  value="2.000"/>
+    <param name="r_vx" value="2.000"/>
+
+    <param name="q_y"  value="0.083"/>
+    <param name="r_y"  value="2.000"/>
+    <param name="r_vy" value="2.000"/>
+
+    <param name="q_z"    value="100.000"/>
+    <param name="r_z"    value="0.001"/>
+    <param name="r_vz"   value="0.001"/>
+    <param name="r_vz_p" value="2000.000"/>
+
+  </node>
+
+</launch>
