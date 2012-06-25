@@ -8,5 +8,7 @@
   <depend stack="common" />
   <depend stack="common_msgs" />
   <depend stack="geometry" />
+  <depend stack="navigation" />
+  <depend stack="dynamic_reconfigure"/>
   <depend stack="ros" />
 </stack>
