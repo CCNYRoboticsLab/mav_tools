@@ -9,6 +9,5 @@
   <depend stack="common_msgs" />
   <depend stack="geometry" />
   <depend stack="navigation" />
-  <depend package="dynamic_reconfigure"/>
   <depend stack="ros" />
 </stack>
