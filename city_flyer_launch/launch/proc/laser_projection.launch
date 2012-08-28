@@ -19,7 +19,7 @@ projects the result to the xy-plane.
     <remap from="scan"        to="scan_virtual_middle_unf"/>
     <remap from="scan_sparse" to="scan_virtual_middle"/>
 
-    <param name="skip"  type="int" value="5"/>
+    <param name="step"  type="int" value="5"/>
 
   </node>
 
