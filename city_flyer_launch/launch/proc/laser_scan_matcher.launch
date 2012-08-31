@@ -15,7 +15,7 @@ using an alpha-beta filter.
   <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" 
     name="laser_scan_matcher" output="screen">
 
-    <remap from="imu"             to="mav/imu"/>
+    <remap from="imu/data"        to="mav/imu/data"/>
     <remap from="pose"            to="mav/laser_pose"/>
     <remap from="scan"            to="scan_virtual_middle"/>
     <remap from="cloud"           to="cloud_ortho"/>

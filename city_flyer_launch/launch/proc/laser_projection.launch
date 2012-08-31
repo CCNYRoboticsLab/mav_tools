@@ -29,7 +29,7 @@ projects the result to the xy-plane.
   <node pkg="laser_ortho_projector" type="laser_ortho_projector_node" 
     name="laser_ortho_projector" output="screen">
 
-    <remap from="imu"  to="mav/imu"/>
+    <remap from="imu/data"  to="mav/imu/data"/>
     <remap from="pose" to="mav/pose"/>
     <remap from="scan" to="scan_virtual_middle"/>
 

@@ -41,7 +41,7 @@ OdomInterface::OdomInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
   laser_pose_subscriber_ = nh_mav.subscribe(
     "laser_pose", 1, &OdomInterface::laserPoseCallback, this);
   imu_subscriber_ = nh_mav.subscribe(
-    "imu", 1, &OdomInterface::imuCallback, this);
+    "imu/data", 1, &OdomInterface::imuCallback, this);
   height_subscriber_ = nh_mav.subscribe(
     "height_to_base", 1, &OdomInterface::heightCallback, this);
 

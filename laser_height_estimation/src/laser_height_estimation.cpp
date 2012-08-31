@@ -91,7 +91,7 @@ LaserHeightEstimation::LaserHeightEstimation(ros::NodeHandle nh, ros::NodeHandle
   if (use_imu_)
   {
     imu_subscriber_ = nh_.subscribe(
-      "imu", 5, &LaserHeightEstimation::imuCallback, this);
+      "imu/data", 5, &LaserHeightEstimation::imuCallback, this);
   }
 }
 

@@ -113,7 +113,7 @@ FlyerInterface::FlyerInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
   vel_publisher_ = nh_mav.advertise<geometry_msgs::TwistStamped>(
     "vel", 10);
   imu_publisher_ = nh_mav.advertise<sensor_msgs::Imu>(
-    "imu", 10);
+    "imu/data", 10);
   flight_state_publisher_ = nh_mav.advertise<std_msgs::UInt8>(
     "status/flight_state", 1);
   battery_voltage_publisher_ = nh_mav.advertise<std_msgs::Float32>(
