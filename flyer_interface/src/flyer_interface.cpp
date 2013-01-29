@@ -269,7 +269,7 @@ void FlyerInterface::initializeParams()
 
   if (!nh_private_.getParam ("comm/serial_port_rx", serial_port_rx_))
     serial_port_rx_ = "/dev/ttyUSB0";
-  if (!nh_private_.getParam ("cogmm/serial_port_tx", serial_port_tx_))
+  if (!nh_private_.getParam ("comm/serial_port_tx", serial_port_tx_))
     serial_port_tx_ = "/dev/ttyUSB0";
   if (!nh_private_.getParam ("comm/baudrate", baudrate_))
     baudrate_ = MAV_DEFAULT_BAUDRATE;

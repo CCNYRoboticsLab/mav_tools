@@ -19,6 +19,7 @@ using an alpha-beta filter.
     <remap from="pose"            to="mav/laser_pose"/>
     <remap from="scan"            to="scan_virtual_middle"/>
     <remap from="cloud"           to="cloud_ortho"/>
+    <remap from="pose_stamped"    to="/mav/laser_pose"/>
 
     <param name="publish_tf"           type="bool" value="false"/>
     <param name="publish_pose"         type="bool" value="false"/>
@@ -47,11 +48,11 @@ using an alpha-beta filter.
 
     <remap from="mav/pose"      to="mav/laser_pose"/>
     <remap from="mav/pose_f"    to="mav/laser_pose_f"/>
-    <remap from="mav/vel_f"     to="mav/laser_vel_f"/>
+    <remap from="/mav/twist_f"  to="/mav/laser_vel_f"/>
     <remap from="scan"          to="scan_virtual_middle"/>
     <remap from="cloud"         to="cloud_ortho"/>
 
-    <remap from="mav/vel_unf"   to="mav/laser_pose_unf"/>
+    <remap from="mav/twist_unf"   to="mav/laser_pose_unf"/>
     <remap from="mav/pose_unf"  to="mav/laser_vel_unf"/>
 
     <param name="alpha"               value="0.8"/>

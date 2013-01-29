@@ -13,7 +13,8 @@ all messages up and down via serial port.
     ## serial comm parameters #################
 
     <param name="comm/baudrate" value="460800"/>
-
+    <param name="comm/serial_port_rx" value="/dev/ttyS2"/>
+    <param name="comm/serial_port_tx" value="/dev/ttyS2"/>	
     <param name="comm/pose_period"   value="100"/>
     <param name="comm/status_period" value="100"/>
     <param name="comm/debug_period"  value="100"/>
