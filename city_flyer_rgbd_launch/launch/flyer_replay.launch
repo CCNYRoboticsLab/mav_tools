@@ -14,7 +14,7 @@ recorded in a bag file.
 
   #### Data Playback #########################################################
 
-  <include file="$(find city_flyer_rgbd_launch)/launch/misc/play_livedata.launch">
+  <include file="$(find ccny_openni_launch)/launch/openni_play.launch">
     <arg name="bag_name" value="$(arg bag_name)" />
   </include>
  

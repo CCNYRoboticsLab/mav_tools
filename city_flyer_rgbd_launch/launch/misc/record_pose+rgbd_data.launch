@@ -7,10 +7,8 @@
           /camera/depth/image_raw 
           /camera/rgb/camera_info 
           /camera/rgb/image_raw
-          /mav/rgbd_pose
           /mav/imu/data
           /mav/cmd/pose
           -O $(env HOME)/ros/bags/$(arg bag_name)" />
-    
 
 </launch>

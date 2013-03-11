@@ -1,9 +1,0 @@
-<launch>
-  <arg name="bag_name"/>
-
-  <param name="use_sim_time" value="true"/>
-
-  <node pkg="rosbag" type="play" name="play" output="log"
-    args="$(env HOME)/ros/bags/$(arg bag_name) --queue=10 --delay=10 --start=0 --clock"/>
-
-</launch>
