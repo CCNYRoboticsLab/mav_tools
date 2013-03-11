@@ -51,12 +51,15 @@ class OdomInterface
 
     std::string base_frame_;
     std::string fixed_frame_;
+    std::string fixed_frame_vo_;
 
     // **** state variables
 
     boost::mutex pose_mutex_;
 
     PoseStamped pose_;
+
+    double roll_diff_, pitch_diff_;
 
     // **** member functions
 
