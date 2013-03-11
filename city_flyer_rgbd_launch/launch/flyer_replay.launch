@@ -14,13 +14,13 @@ recorded in a bag file.
 
   #### Data Playback #########################################################
 
-  <include file="$(find city_flyer_launch)/launch/misc/play_livedata.launch">
+  <include file="$(find city_flyer_rgbd_launch)/launch/misc/play_livedata.launch">
     <arg name="bag_name" value="$(arg bag_name)" />
   </include>
  
    #### Data Processing #########################################################
 
-  <include file="$(find city_flyer_launch)/launch/proc/procdata.launch"/>
+  <include file="$(find city_flyer_rgbd_launch)/launch/proc/procdata.launch"/>
 
 </launch>
 

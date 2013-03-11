@@ -10,7 +10,7 @@
           /mav/rgbd_pose
           /mav/imu 
           /mav/cmd/pose
-          -O $(env HOME)/ros/bags/$(arg bag_name)"/>
+          -O $(env HOME)/ros/bags/$(arg bag_name)" />
     
 
 </launch>

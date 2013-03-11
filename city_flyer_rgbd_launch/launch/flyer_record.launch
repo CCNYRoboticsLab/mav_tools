@@ -14,17 +14,17 @@ data to a bag file.
 
   #### Data Aquisition #########################################################
 
-  <include file="$(find city_flyer_launch)/launch/live/livedata.launch"/>
+  <include file="$(find city_flyer_rgbd_launch)/launch/live/livedata.launch"/>
 
   #### Data Recording ##########################################################
 
-  <include file="$(find city_flyer_launch)/launch/misc/record_livedata.launch">
+  <include file="$(find city_flyer_rgbd_launch)/launch/misc/record_livedata.launch">
     <arg name="bag_name" value="$(arg bag_name)" />
   </include>
 
   #### Data Processing #########################################################
 
-  <include file="$(find city_flyer_launch)/launch/proc/procdata.launch"/>
+  <include file="$(find city_flyer_rgbd_launch)/launch/proc/procdata.launch"/>
 
 </launch>
 
