@@ -93,8 +93,6 @@ void OdomInterface::rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg)
   
   roll_diff_  = roll_imu  - roll_vo;
   pitch_diff_ = pitch_imu - pitch_vo;
-  ROS_INFO("roll_imu, pitch_imu: %0.4f %0.4f \n", roll_imu, pitch_imu);
-  ROS_INFO("roll_vo,  pitch_vo:  %0.4f %0.4f \n", roll_vo,  pitch_vo);
   publishPose();
   pose_mutex_.unlock();
 }
