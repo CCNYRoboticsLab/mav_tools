@@ -133,6 +133,7 @@ void OdomInterface::rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg)
   // publish with the timestamp from this message
   pose_.header.stamp = rgbd_pose_msg->header.stamp;
   tf::poseTFToMsg(new_odom2base, pose_.pose);
+
   publishPose();
   pose_mutex_.unlock();
 }
