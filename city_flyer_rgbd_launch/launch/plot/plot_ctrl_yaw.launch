@@ -1,6 +1,7 @@
 <launch>
 
-  <node pkg="rxtools" type="rxplot" name="plot" 
-    args="/mav/debug/yaw"/>
+  <node pkg="rqt_plot" type="rqt_plot" name="plot" 
+    args="/mav/debug/yaw
+    -b MatDataPlot"/>
 
 </launch>

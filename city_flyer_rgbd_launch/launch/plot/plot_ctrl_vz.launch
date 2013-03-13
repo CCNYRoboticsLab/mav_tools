@@ -1,6 +1,8 @@
 <launch>
 
-  <node pkg="rxtools" type="rxplot" name="plot_vz" 
-    args="/mav/pose/pose/position/z, /mav/cmd/vel/twist/linear/z,/mav/vel/twist/linear/z"/>
+  <node pkg="rqt_plot" type="rqt_plot" name="plot_vz" 
+    args="/mav/pose/pose/position/z, /mav/cmd/vel/twist/linear/z,
+    /mav/vel/twist/linear/z
+    -b MatDataPlot"/>
 
 </launch>

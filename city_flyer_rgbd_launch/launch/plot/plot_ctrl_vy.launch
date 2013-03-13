@@ -1,6 +1,8 @@
 <launch>
 
-  <node pkg="rxtools" type="rxplot" name="plot_vy" 
-    args="/mav/cmd/vel/twist/linear/y,/mav/debug/pid/err_vy_bf/data, /mav/debug/roll/data,/mav/debug/cmd/roll/data"/>
+  <node pkg="rqt_plot" type="rqt_plot" name="plot_vy" 
+    args="/mav/cmd/vel/twist/linear/y,/mav/debug/pid/err_vy_bf/data, 
+    /mav/debug/roll/data,/mav/debug/cmd/roll/data
+    -b MatDataPlot"/>
 
 </launch>
