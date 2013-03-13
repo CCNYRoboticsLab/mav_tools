@@ -14,6 +14,11 @@ OdomInterface::OdomInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
   pose_.pose.position.y = 0.0;
   pose_.pose.position.z = 0.0;
 
+  odom_vo2base_.setIdentity();
+  odom2base_.setIdentity();
+  roll_imu_  = 0.0;
+  pitch_imu_ = 0.0;
+  yaw_vo_    = 0.0;
   tf::Quaternion q;
   q.setRPY(0,0,0);
   tf::quaternionTFToMsg(q, pose_.pose.orientation);
@@ -61,40 +66,73 @@ void OdomInterface::rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg)
 {
   pose_mutex_.lock();
 
+/*
   // use x, y and z from rgbd
   pose_.pose.position.x = rgbd_pose_msg->pose.position.x;
   pose_.pose.position.y = rgbd_pose_msg->pose.position.y;
   pose_.pose.position.z = rgbd_pose_msg->pose.position.z;
+*/
 
-  // use roll and pitch from IMU
-  double roll_imu, pitch_imu, unused_imu;
-  tf::Quaternion q_pose_imu;
-  tf::quaternionMsgToTF(pose_.pose.orientation, q_pose_imu);
-  MyMatrix m_pose_imu(q_pose_imu);
-  m_pose_imu.getRPY(roll_imu, pitch_imu, unused_imu);
+  tf::Transform new_odom_vo2base;
+  tf::Transform delta_odom_vo;
+  tf::Transform delta_odom;
+  tf::Transform new_odom2base;
+  tf::Transform odom2odom_vo;
+  tf::poseMsgToTF(rgbd_pose_msg->pose, new_odom_vo2base);
+  delta_odom_vo = new_odom_vo2base * odom_vo2base_.inverse();
+  
+  
+   
+  // take roll and pitch from IMU
+  double new_roll_imu, new_pitch_imu, unused_imu;
+  MyMatrix m_pose_imu(curr_imu_q_);
+  m_pose_imu.getRPY(new_roll_imu, new_pitch_imu, unused_imu);
 
-  // use yaw from rgbd
-  double yaw_vo = tf::getYaw(rgbd_pose_msg->pose.orientation);
-
+  // take yaw from rgbd
+  double new_yaw_vo = tf::getYaw(rgbd_pose_msg->pose.orientation);
+  /*
   // combine r, p, y
   tf::Quaternion q_result;
   q_result.setRPY(roll_imu, pitch_imu, yaw_vo);
   tf::quaternionTFToMsg(q_result, pose_.pose.orientation);
+  */
 
-  // publish with the timestamp from this message
-  pose_.header.stamp = rgbd_pose_msg->header.stamp;
-  
+   
+  /*
   //compute the difference between imu and vo roll and pitch
   double roll_vo, pitch_vo, unused_vo;
   tf::Quaternion q_pose_vo;
   tf::quaternionMsgToTF(rgbd_pose_msg->pose.orientation, q_pose_vo);
   MyMatrix m_pose_vo(q_pose_vo);
   m_pose_vo.getRPY(roll_vo, pitch_vo, unused_vo);
+  */
+  double delta_roll_imu, delta_pitch_imu, delta_yaw_vo;
+  delta_roll_imu  = new_roll_imu  - roll_imu_;
+  delta_pitch_imu = new_pitch_imu - pitch_imu_;
+  delta_yaw_vo  = new_yaw_vo - yaw_vo_;
   
-  roll_diff_  = roll_imu  - roll_vo;
-  pitch_diff_ = pitch_imu - pitch_vo;
-  ROS_INFO("roll_imu, pitch_imu: %0.4f %0.4f \n", roll_imu, pitch_imu);
-  ROS_INFO("roll_vo,  pitch_vo:  %0.4f %0.4f \n", roll_vo,  pitch_vo);
+  tf::Quaternion delta_q;
+  delta_q.setRPY(delta_roll_imu, delta_pitch_imu, delta_yaw_vo);
+  tf::Vector3 vec = delta_odom_vo.getOrigin();
+  
+  delta_odom.setOrigin(vec);
+  delta_odom.setRotation(tf::Quaternion(delta_q));
+  roll_imu_ = new_roll_imu;
+  pitch_imu_ = new_pitch_imu;
+  yaw_vo_  = new_yaw_vo;
+  new_odom2base = delta_odom * odom2base_;
+  odom2odom_vo = new_odom2base * new_odom_vo2base.inverse();
+
+  odom2base_ = new_odom2base;
+  odom_vo2base_ = new_odom_vo2base;
+  
+  tf_broadcaster_.sendTransform(
+    tf::StampedTransform( odom2odom_vo,
+    pose_.header.stamp, fixed_frame_, fixed_frame_vo_));
+  
+  // publish with the timestamp from this message
+  pose_.header.stamp = rgbd_pose_msg->header.stamp;
+  tf::poseTFToMsg(new_odom2base, pose_.pose);
   publishPose();
   pose_mutex_.unlock();
 }
@@ -105,11 +143,10 @@ void OdomInterface::imuCallback (const sensor_msgs::Imu::ConstPtr& imu_msg)
 
   // use roll and pitch from IMU, and yaw from rgbd
 
-  double r, p, y, unused;
+  //double r, p, y, unused;
 
-  tf::Quaternion q_imu;
-  tf::quaternionMsgToTF(imu_msg->orientation, q_imu);
-  MyMatrix m_imu(q_imu);
+  tf::quaternionMsgToTF(imu_msg->orientation, curr_imu_q_);
+ /* MyMatrix m_imu(q_imu);
   m_imu.getRPY(r, p, unused);
 
   tf::Quaternion q_pose;
@@ -126,7 +163,7 @@ void OdomInterface::imuCallback (const sensor_msgs::Imu::ConstPtr& imu_msg)
   pose_.header.stamp = imu_msg->header.stamp;
   //publishPose();
 
-  pose_mutex_.unlock();
+  pose_mutex_.unlock();*/
 }
 
 void OdomInterface::heightCallback (const mav_msgs::Height::ConstPtr& height_msg)
@@ -164,13 +201,14 @@ void OdomInterface::publishPose()
   tf_broadcaster_.sendTransform(odom_to_base_link_tf);
 */
   
-  tf::Quaternion q_correction;
+/*  tf::Quaternion q_correction;
   q_correction.setRPY(roll_diff_, pitch_diff_, 0);
-  //ROS_INFO("roll_diff, pitch_diff: %0.2f %0.2f \n", roll_diff_, pitch_diff_);
+  
+//ROS_INFO("roll_diff, pitch_diff: %0.2f %0.2f \n", roll_diff_, pitch_diff_);
   tf_broadcaster_.sendTransform(
     tf::StampedTransform( tf::Transform(q_correction, tf::Vector3(0, 0, 0)),
     pose_.header.stamp, fixed_frame_, fixed_frame_vo_));
-
+*/
   // *** publish odometry message
   // TODO: add velociyies from ab filters
   
