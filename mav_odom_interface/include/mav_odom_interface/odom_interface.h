@@ -51,12 +51,15 @@ class OdomInterface
 
     std::string base_frame_;
     std::string fixed_frame_;
+    std::string fixed_frame_vo_;
 
     // **** state variables
 
     boost::mutex pose_mutex_;
 
     PoseStamped pose_;
+    tf::Transform odom2base_;
+    tf::Quaternion curr_imu_q_;
 
     // **** member functions
 

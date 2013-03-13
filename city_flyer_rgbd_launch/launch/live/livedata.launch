@@ -5,6 +5,7 @@ hight level.
 -->
 
 <launch>
+  <arg name="publish_cloud" value="false"/>
 
   #### Asctec Autopilot And Proc ###############################################
 
@@ -12,7 +13,9 @@ hight level.
 
   #### kinect ###################################################################
 
-  <include file="$(find city_flyer_rgbd_launch)/launch/live/openni.launch"/>
+  <include file="$(find city_flyer_rgbd_launch)/launch/live/openni.launch">
+       <arg name="publish_cloud"   value="$(arg publish_cloud)" />
+  </include>
 
 </launch>
 
