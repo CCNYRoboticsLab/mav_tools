@@ -9,7 +9,7 @@
   <arg name="reg_type" default="ICPProbModel"/> 
   
   # Range thresholds:
-  <arg name="max_range" value="15.0"/> 
+  <arg name="max_range" value="10.0"/> 
   <arg name="max_stdev" value="0.15"/> 
 
   <node pkg="ccny_rgbd" type="visual_odometry_node" name="visual_odometry_node" 
@@ -37,16 +37,7 @@
     #### features: GFT ################################
 
     <param name="feature/GFT/n_features"   value = "400"/>
-    <param name="feature/GFT/min_distance" value = "2.0"/>
-
-    #### features: SURF ###############################
-  
-    <param name="feature/SURF/threshold" value = "400"/>
-
-    #### features: ORB ###############################
-  
-    <param name="feature/ORB/n_features" value = "300"/>
-    <param name="feature/ORB/threshold"  value = "31"/>
+    <param name="feature/GFT/min_distance" value = "1.0"/>
 
     #### registration #################################
 
