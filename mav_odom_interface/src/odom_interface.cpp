@@ -39,6 +39,8 @@ OdomInterface::OdomInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
     "pose", 1);
   odom_publisher_ = nh_mav.advertise<nav_msgs::Odometry>(
     "odom", 1);
+  path_pub_ = nh_mav.advertise<nav_msgs::Path>(
+    "path_odom", 1);
 
   // **** ros subscribers
 
@@ -89,7 +91,7 @@ void OdomInterface::rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg)
   // publish the pose
   tf::poseTFToMsg(odom2base_, pose_.pose);
   publishPose();
-
+  publishPath();
   pose_mutex_.unlock();
 }
 
@@ -152,5 +154,13 @@ void OdomInterface::publishPose()
   odom_publisher_.publish(odom_message);
 }
 
+void OdomInterface::publishPath()
+{
+  path_msg_.header.stamp = pose_.header.stamp;
+  path_msg_.header.frame_id = fixed_frame_;
+     
+  path_msg_.poses.push_back(pose_);
+  path_pub_.publish(path_msg_);
+}
 } // namespace mav
 
