@@ -71,6 +71,17 @@ void OdomInterface::rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg)
   // vo motion, measured in the base frame
   tf::Transform d_base_frame =  odomvo2base_prev_.inverse() * odomvo2base;
   
+  if (!use_vo_yaw_)
+  {
+    double roll, pitch, yaw;
+  
+    tf::Matrix3x3 m_imu(d_base_frame.getRotation());
+    m_imu.getRPY(roll, pitch, yaw);
+    tf::Quaternion q;
+    q.setRPY(roll, pitch, 0.0);
+    d_base_frame.setRotation(q);
+  }
+  
   // apply the motion
   odom2base_ = odom2base_ * d_base_frame;
 
