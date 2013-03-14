@@ -60,6 +60,8 @@ class OdomInterface
     PoseStamped pose_;
     tf::Transform odom2base_;
     tf::Quaternion curr_imu_q_;
+    
+    tf::Transform odom2base_prev_;
 
     // **** member functions
 
