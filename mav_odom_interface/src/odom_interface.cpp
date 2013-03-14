@@ -15,7 +15,7 @@ OdomInterface::OdomInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
   pose_.pose.position.z = 0.0;
 
   odom2base_.setIdentity();
-  odom2base_prev_.setIdentity();
+  odomvo2base_prev_.setIdentity();
   tf::poseTFToMsg(odom2base_, pose_.pose);
 
   ros::NodeHandle nh_mav (nh_, "mav");
@@ -28,7 +28,9 @@ OdomInterface::OdomInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
     fixed_frame_ = "odom";
   if (!nh_private_.getParam ("base_frame", base_frame_))
     base_frame_ = "base_link";
-
+  if (!nh_private_.getParam ("use_vo_yaw", use_vo_yaw_))
+    use_vo_yaw_ = true;
+  
   pose_.header.frame_id = fixed_frame_;
 
   // **** ros publishers
@@ -65,7 +67,7 @@ void OdomInterface::rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg)
   tf::poseMsgToTF(rgbd_pose_msg->pose, odomvo2base);
 
   // vo motion, measured in the base frame
-  tf::Transform d_base_frame =  odom2base_prev_.inverse() * odomvo2base;
+  tf::Transform d_base_frame =  odomvo2base_prev_.inverse() * odomvo2base;
   
   // apply the motion
   odom2base_ = odom2base_ * d_base_frame;
@@ -74,7 +76,7 @@ void OdomInterface::rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg)
   tf::Transform odom2odomvo = odom2base_ * odomvo2base.inverse();
   
   // save for next timestamp
-  odom2base_prev_ = odomvo2base;
+  odomvo2base_prev_ = odomvo2base;
   
   // update the pose header
   pose_.header.stamp = rgbd_pose_msg->header.stamp; 
@@ -98,10 +100,13 @@ void OdomInterface::imuCallback (const sensor_msgs::Imu::ConstPtr& imu_msg)
   tf::quaternionMsgToTF(imu_msg->orientation, curr_imu_q_);
 
   // mix 
-  double roll, pitch, unused;
+  double roll, pitch, yaw;
+  
   tf::Matrix3x3 m_imu(curr_imu_q_);
-  m_imu.getRPY(roll, pitch, unused);
-  double yaw = tf::getYaw( odom2base_.getRotation());
+  m_imu.getRPY(roll, pitch, yaw);
+  
+  if (use_vo_yaw_)
+    yaw = tf::getYaw(odom2base_.getRotation());
 
   tf::Quaternion q_mixed;
   q_mixed.setRPY(roll, pitch, yaw);
