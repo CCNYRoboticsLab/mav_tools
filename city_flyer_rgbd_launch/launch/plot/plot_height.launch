@@ -1,6 +1,7 @@
 <launch>
 
-  <node pkg="rxtools" type="rxplot" name="plot" 
-    args="/mav/height_to_footprint/height,/mav/cmd_pose/pose/position/z"/>
+  <node pkg="rqt_plot" type="rqt_plot" name="plot_height_to_footprint" 
+    args="/mav/height_to_footprint/height,/mav/cmd_pose/pose/position/z
+    -b MatDataPlot"/>
 
 </launch>

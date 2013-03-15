@@ -1,5 +1,7 @@
 <launch>
 
-  <node pkg="rxtools" type="rxplot" name="plot_xy" 
-    args="/mav/pose/pose/position/y,/mav/cmd_pose/pose/position/y,/asctec/CTRL_INPUT/roll,/asctec/IMU_CALCDATA/angle_roll"/>
+  <node pkg="rqt_plot" type="rqt_plot" name="plot_xy" 
+    args="/mav/pose/pose/position/y,/mav/cmd_pose/pose/position/y,
+          /asctec/CTRL_INPUT/roll,/asctec/IMU_CALCDATA/angle_roll
+          -b MatDataPlot"/>
 </launch>

@@ -58,8 +58,8 @@ class OdomInterface
     boost::mutex pose_mutex_;
 
     PoseStamped pose_;
-
-    double roll_diff_, pitch_diff_;
+    tf::Transform odom2base_;
+    tf::Quaternion curr_imu_q_;
 
     // **** member functions
 

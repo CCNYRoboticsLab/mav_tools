@@ -5,7 +5,7 @@ Launches RVIZ, with remapped goal topic to mav namespace
 <launch>
 
   <node pkg="rviz" type="rviz" name="rviz" output="screen"
-    args="-d $(find city_flyer_rgbd_launch)/launch/misc/rviz.vcg">
+    args="-d $(find city_flyer_rgbd_launch)/launch/misc/config.rviz">
 
     <remap from="/goal" to="/mav/goal2D_rviz"/>
 

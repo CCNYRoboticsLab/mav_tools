@@ -1,10 +1,13 @@
 <launch>
 
-  <node pkg="rxtools" type="rxplot" name="plot_y" 
-    args="/mav/pose/pose/position/y,/mav/cmd/pose/pose/position/y, /mav/debug/roll/data,/mav/debug/cmd/roll/data, /mav/debug/pid/y_i_term/data"/>
+  <node pkg="rqt_plot" type="rqt_plot" name="plot_y" 
+    args="/mav/pose/pose/position/y,/mav/cmd/pose/pose/position/y, 
+          /mav/debug/roll/data,/mav/debug/cmd/roll/data, /mav/debug/pid/y_i_term/data
+          -b MatDataPlot"/>
 
 
-  <node pkg="rxtools" type="rxplot" name="plot_y_err" 
-    args="/mav/debug/pid_err_y_bf/data"/>
+  <node pkg="rqt_plot" type="rqt_plot" name="plot_y_err" 
+    args="/mav/debug/pid_err_y_bf/data
+    -b MatDataPlot"/>
 
 </launch>
