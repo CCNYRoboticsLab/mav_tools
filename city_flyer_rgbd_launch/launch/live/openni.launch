@@ -12,22 +12,11 @@
   #             5 (320x240 QVGA 30Hz)
   #             8 (160x120 QQVGA 30Hz)
   
-  <!-- Nodelet manager -->
-  <node pkg="nodelet" type="nodelet" name="$(arg manager_name)" args="manager"
-        output="screen"/>
-
-  <!-- Driver nodelet -->      
-  <include file="$(find ccny_openni_launch)/launch/include/device.launch">       
+  <include file="$(find ccny_openni_launch)/launch/openni.launch">
      <arg name="manager_name" value="$(arg manager_name)" />
      <arg name="calib_path"   value="$(arg calib_path)" />
      <arg name="image_mode"   value="$(arg image_mode)" />
      <arg name="depth_mode"   value="$(arg depth_mode)" />
-  </include>
-            
-  <!-- RGBD processing -->
-  <include file="$(find ccny_openni_launch)/launch/include/proc.launch">       
-     <arg name="manager_name" value="$(arg manager_name)" />
-     <arg name="calib_path"   value="$(arg calib_path)" />
      <arg name="publish_cloud"   value="$(arg publish_cloud)" />
   </include>
 
