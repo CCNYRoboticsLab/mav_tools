@@ -9,6 +9,6 @@
           /camera/rgb/image_raw
           /mav/imu/data
           /mav/cmd/pose
-          -O $(env HOME)/ros/bags/$(arg bag_name)" />
+          -O $(arg bag_name)" />
 
 </launch>

@@ -21,14 +21,14 @@ data: pose estimation, mapping, planning.
 
   <include file="$(find city_flyer_rgbd_launch)/launch/proc/control.launch"/>
 
-  #### SLAM ##########################################################
 <!--
+  #### SLAM ##########################################################
   <include file="$(find city_flyer_rgbd_launch)/launch/proc/slam_gmapping.launch"/>
-
-  #### Localisation ##################################################
-
-  <include file="$(find city_flyer_rgbd_launch)/launch/proc/amcl.launch"/>
 -->
+
+  #### AMCL Localization ##############################################
+  <include file="$(find city_flyer_rgbd_launch)/launch/proc/amcl.launch"/>
+
 
 </launch>
 
