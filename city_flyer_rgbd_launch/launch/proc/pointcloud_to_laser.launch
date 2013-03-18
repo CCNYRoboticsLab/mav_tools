@@ -27,6 +27,7 @@
     <remap from="cloud" to="/rgbd/cloud" />
     # NOT NEED: remap from="cloud" to="cloud_throttled"
     <remap from="scan" to="scan_virtual_from_cloud"/>
+    <remap from="pose"         to="/map/pose"/> # Published by the AMCL mapper
   </node>
 
 <!--
