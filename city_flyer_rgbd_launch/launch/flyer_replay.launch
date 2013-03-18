@@ -5,7 +5,7 @@ recorded in a bag file.
 
 <launch>
 
-  <arg name="bag_name" value="$(env HOME)/ros/bags/cityflier_02.bag"/>
+  <arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/hallway_01.bag"/>
 
   #### Nodelet manager #########################################################
 
@@ -16,6 +16,7 @@ recorded in a bag file.
 
   <include file="$(find ccny_openni_launch)/launch/openni_play.launch">
     <arg name="bag_name" value="$(arg bag_name)" />
+    <arg name="publish_cloud" value="true" />
   </include>
  
    #### Data Processing #########################################################
