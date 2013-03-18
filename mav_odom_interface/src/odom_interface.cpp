@@ -71,17 +71,6 @@ void OdomInterface::rgbdPoseCallback(const PoseStamped::ConstPtr& rgbd_pose_msg)
   // vo motion, measured in the base frame
   tf::Transform d_base_frame =  odomvo2base_prev_.inverse() * odomvo2base;
   
-  if (!use_vo_yaw_)
-  {
-    double roll, pitch, yaw;
-  
-    tf::Matrix3x3 m_imu(d_base_frame.getRotation());
-    m_imu.getRPY(roll, pitch, yaw);
-    tf::Quaternion q;
-    q.setRPY(roll, pitch, 0.0);
-    d_base_frame.setRotation(q);
-  }
-  
   // apply the motion
   odom2base_ = odom2base_ * d_base_frame;
 
@@ -124,7 +113,8 @@ void OdomInterface::imuCallback (const sensor_msgs::Imu::ConstPtr& imu_msg)
   tf::Quaternion q_mixed;
   q_mixed.setRPY(roll, pitch, yaw);
   odom2base_.setRotation(q_mixed);
-    
+  
+  odom2base_.setRotation(curr_imu_q_);  
   pose_mutex_.unlock();
 }
 
@@ -159,7 +149,7 @@ void OdomInterface::publishPose()
     boost::make_shared<nav_msgs::Odometry>();
 
   odom_message->header = pose_.header;
-  odom_message->child_frame_id = "base_link";
+  odom_message->child_frame_id = base_frame_;
   odom_message->pose.pose = pose_message->pose;
   
   odom_publisher_.publish(odom_message);
@@ -173,5 +163,6 @@ void OdomInterface::publishPath()
   path_msg_.poses.push_back(pose_);
   path_pub_.publish(path_msg_);
 }
+
 } // namespace mav
 
