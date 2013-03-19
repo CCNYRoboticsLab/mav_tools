@@ -52,6 +52,7 @@ class OdomInterface
     std::string base_frame_;
     std::string fixed_frame_;
     std::string fixed_frame_vo_;
+    bool use_vo_yaw_;
 
     // **** state variables
 
@@ -60,6 +61,8 @@ class OdomInterface
     PoseStamped pose_;
     tf::Transform odom2base_;
     tf::Quaternion curr_imu_q_;
+    
+    tf::Transform odomvo2base_prev_;
 
     // **** member functions
 
