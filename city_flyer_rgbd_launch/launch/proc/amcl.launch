@@ -1,7 +1,7 @@
 <launch>
 
   <arg name="path_to_2D_maps" value="$(env HOME)/ros/Maps/2D/5th_Floor_Steinman_Hall"/>
-  <arg name="map_server_yaml_file" value="$(arg path_to_2D_maps)/5th_floor_5cm.yaml"/>
+  <arg name="map_server_yaml_file" value="$(arg path_to_2D_maps)/5th_floor_10cm.yaml"/>
 
   #### Virtual laser from point cloud ########  
   <include file="$(find city_flyer_rgbd_launch)/launch/proc/pointcloud_to_laser.launch" />
@@ -19,15 +19,15 @@
 
     <param name="base_frame_id" value="base_ortho"/>  ### TODO??
     <param name="odom_model_type" value="omni"/>
-    <param name="odom_alpha1" value="0.2"/>
-    <param name="odom_alpha2" value="0.2"/>
-    <param name="odom_alpha3" value="0.2"/>
-    <param name="odom_alpha4" value="0.2"/>
-    <param name="laser_max_beams" value="50"/>
+    <param name="odom_alpha1" value="0.7"/>
+    <param name="odom_alpha2" value="0.5"/>
+    <param name="odom_alpha3" value="0.7"/>
+    <param name="odom_alpha4" value="0.5"/>
+    <param name="laser_max_beams" value="15"/>
     <param name="laser_model_type" value="beam"/>
 
-    <param name="min_particles" value="50"/>
-    <param name="max_particles" value="1000"/>
+    <param name="min_particles" value="500"/>
+    <param name="max_particles" value="2000"/>
 
   </node>
 
