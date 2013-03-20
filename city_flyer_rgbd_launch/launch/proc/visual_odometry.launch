@@ -67,7 +67,6 @@
     <param name="publish_unfiltered"  value="true"/>
   </node>
   
-<!--
   #### KEYFRAME MAPPING ###################################
   <node pkg="ccny_rgbd" type="keyframe_mapper_node" name="keyframe_mapper_node" 
     output="screen">
@@ -80,7 +79,6 @@
     <param name="max_range" value="7.0"/>
     <param name="max_stdev" value="0.10"/>
   </node>
--->
 
 </launch>
 

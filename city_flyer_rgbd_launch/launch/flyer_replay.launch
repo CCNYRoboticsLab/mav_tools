@@ -6,7 +6,7 @@ recorded in a bag file.
 <launch>
 
   #arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/hallway_5th_floor_02.bag"/#
-  <arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/hallway_01.bag"/>
+  <arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/st_548_02.bag"/>
 
   #### Nodelet manager #########################################################
 
@@ -16,11 +16,12 @@ recorded in a bag file.
   #### Data Playback #########################################################
 
   <include file="$(find ccny_openni_launch)/launch/openni_play.launch">
-    <arg name="bag_name" value="$(arg bag_name)" />
+    <arg name="bag_name"      value="$(arg bag_name)" />
     <arg name="publish_cloud" value="true" />
     <arg name="unwarp"        value="false"/> 
-    <arg name="bag_rate" value="1.5" />
-    <arg name="bag_start" value="40.0" /> # seconds
+    <arg name="scale"         value="1.0"/>
+    <arg name="bag_rate"      value="1.0" />
+    <arg name="bag_start"     value="50.0" /> # seconds
   </include>
  
    #### Data Processing #########################################################
