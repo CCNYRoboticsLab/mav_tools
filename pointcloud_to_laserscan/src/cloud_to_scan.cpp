@@ -68,7 +68,7 @@ public:
   }
 
 private:
-  typedef pcl::PointXYZ           PointT;
+  typedef pcl::PointXYZRGB           PointT;
   typedef pcl::PointCloud<PointT> PointCloudT;
 
   boost::mutex connect_mutex_;
@@ -85,6 +85,7 @@ private:
     // set initial orientation to 0
     world_to_cloud_.setIdentity();
     ortho_to_cloud_.setIdentity();
+    current_z_pos_ = 0.0;
 
     // **** parameters
     if (!private_nh.getParam ("fixed_frame", world_frame_))
@@ -94,10 +95,14 @@ private:
     if (!private_nh.getParam ("ortho_frame", ortho_frame_))
       ortho_frame_ = "/base_ortho";
 
+    if (!private_nh.getParam ("queue_size", queue_size_))
+      queue_size_ = 5;
     if (!private_nh.getParam ("use_pose", use_pose_))
       use_pose_ = true;
     if (!private_nh.getParam ("publish_tf", publish_tf_))
       publish_tf_ = true;
+    if (!private_nh.getParam ("publish_ortho_cloud", publish_ortho_cloud_))
+      publish_ortho_cloud_ = false;
 
     private_nh.getParam("min_height", min_height_);
     private_nh.getParam("max_height", max_height_);
@@ -123,6 +128,9 @@ private:
 
     boost::lock_guard<boost::mutex> lock(connect_mutex_);
     laser_pub_ = nh_.advertise(scan_ao);
+
+    if(publish_ortho_cloud_)
+      ortho_cloud_pub_ = nh_.advertise<PointCloudT>("cloud_ortho", queue_size_);
   };
 
   void connectCB() {
@@ -151,8 +159,25 @@ private:
 
   void reconfigure(pointcloud_to_laserscan::CloudScanConfig &config, uint32_t level)
   {
+    boost::mutex::scoped_lock(mutex_);
+
     use_pose_ = config.use_pose;
     publish_tf_ = config.publish_tf;
+
+    bool old_publish_cloud = publish_ortho_cloud_;
+    publish_ortho_cloud_ = config.publish_ortho_cloud;
+
+    if(!old_publish_cloud && publish_ortho_cloud_)
+    {
+      ortho_cloud_pub_ = nh_.advertise<PointCloudT>("cloud_ortho", queue_size_);
+    }
+    else
+    {
+      if(old_publish_cloud && !publish_ortho_cloud_)
+        ortho_cloud_pub_.shutdown();
+    }
+
+
     min_height_ = config.min_height;
     max_height_ = config.max_height;
     angle_min_ = config.angle_min;
@@ -268,6 +293,9 @@ private:
       }
 
       laser_pub_.publish(laser_output);
+      if(publish_ortho_cloud_)
+        ortho_cloud_pub_.publish(cloud_output);
+
     }
   }
 
@@ -277,6 +305,7 @@ private:
     // obtain world to base frame transform from the pose message
     tf::Transform world_to_base;
     tf::poseMsgToTF(pose_msg->pose, world_to_base);
+    current_z_pos_ = (double) world_to_base.getOrigin().getZ(); // Save current position's z coefficient (height)
 
     // calculate world to ortho frame transform
     tf::Transform world_to_ortho;
@@ -299,7 +328,8 @@ private:
     const tf::Vector3&    w2b_o = world_to_base.getOrigin();
     const tf::Quaternion& w2b_q = world_to_base.getRotation();
 
-    tf::Vector3 wto_o(w2b_o.getX(), w2b_o.getY(), 0.0);
+//    tf::Vector3 wto_o(w2b_o.getX(), w2b_o.getY(), 0.0);
+    tf::Vector3 wto_o(w2b_o.getX(), w2b_o.getY(), current_z_pos_);
     tf::Quaternion wto_q = tf::createQuaternionFromYaw(tf::getYaw(w2b_q));
 
     world_to_ortho.setOrigin(wto_o);
@@ -348,10 +378,13 @@ private:
   }
 
   double min_height_, max_height_, angle_min_, angle_max_, angle_increment_, scan_time_, range_min_, range_max_, range_min_sq_;
+  double current_z_pos_; ///< to dynamically offset the min and max heights with respect to the camera's optical axis
   bool use_pose_;
   bool publish_tf_;
+  bool publish_ortho_cloud_;
 
   bool initialized_;  ///< state variable
+  int queue_size_;          ///< ROS subscriber (and publisher) queue size parameter
 
   std::string world_frame_;
   std::string base_frame_;
@@ -361,6 +394,8 @@ private:
   ros::Publisher laser_pub_;
   ros::Subscriber cloud_subscriber_;
   ros::Subscriber pose_subscriber_;
+  ros::Publisher ortho_cloud_pub_;  ///< The ortho cloud we use for generating the virtual laser from
+
 
   tf::TransformListener tf_listener_;
   tf::TransformBroadcaster tf_broadcaster_;

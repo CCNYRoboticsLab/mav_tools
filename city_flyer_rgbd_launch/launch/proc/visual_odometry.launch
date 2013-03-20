@@ -23,17 +23,17 @@
     
     #  ORB, SURF, or GFT (Good features to track)
     <param name="feature/detector_type"       value="$(arg detector_type)"/> 
-    <param name="feature/smooth"              value="0"/>
-    <param name="feature/max_range"           value="5.0"/>
-    <param name="feature/max_stdev"           value="0.05"/>
+    <param name="feature/smooth"              value="0"/>  # Gaussian filter (window size in px)
+    <param name="feature/max_range"           value="10"/>
+    <param name="feature/max_stdev"           value="0.30"/>
     <param name="feature/show_keypoints"      value="false"/>
     <param name="feature/publish_cloud"       value="true"/>
     <param name="feature/publish_covariances" value="false"/>
 
     #### features: GFT ################################
 
-    <param name="feature/GFT/n_features"   value = "300"/>
-    <param name="feature/GFT/min_distance" value = "1.0"/>
+    <param name="feature/GFT/n_features"   value = "300"/>  # Orig: 300
+    <param name="feature/GFT/min_distance" value = "1.0"/>  # pixels
 
     #### registration #################################
 
