@@ -265,6 +265,7 @@ class DEFAULT
 
         if("use_pose"==(*i)->name){use_pose = boost::any_cast<bool>(val);}
         if("publish_tf"==(*i)->name){publish_tf = boost::any_cast<bool>(val);}
+        if("publish_ortho_cloud"==(*i)->name){publish_ortho_cloud = boost::any_cast<bool>(val);}
         if("min_height"==(*i)->name){min_height = boost::any_cast<double>(val);}
         if("max_height"==(*i)->name){max_height = boost::any_cast<double>(val);}
         if("angle_min"==(*i)->name){angle_min = boost::any_cast<double>(val);}
@@ -279,6 +280,7 @@ class DEFAULT
 
     bool use_pose;
 bool publish_tf;
+bool publish_ortho_cloud;
 double min_height;
 double max_height;
 double angle_min;
@@ -301,6 +303,8 @@ std::string output_frame_id;
       bool use_pose;
 //#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
       bool publish_tf;
+//#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
+      bool publish_ortho_cloud;
 //#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
       double min_height;
 //#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
@@ -474,6 +478,16 @@ CloudScanConfig::GroupDescription<CloudScanConfig::DEFAULT, CloudScanConfig> Def
       Default.abstract_parameters.push_back(CloudScanConfig::AbstractParamDescriptionConstPtr(new CloudScanConfig::ParamDescription<bool>("publish_tf", "bool", 0, "Publish transformation", "", &CloudScanConfig::publish_tf)));
 //#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
       __param_descriptions__.push_back(CloudScanConfig::AbstractParamDescriptionConstPtr(new CloudScanConfig::ParamDescription<bool>("publish_tf", "bool", 0, "Publish transformation", "", &CloudScanConfig::publish_tf)));
+//#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
+      __min__.publish_ortho_cloud = 0;
+//#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
+      __max__.publish_ortho_cloud = 1;
+//#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
+      __default__.publish_ortho_cloud = 0;
+//#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
+      Default.abstract_parameters.push_back(CloudScanConfig::AbstractParamDescriptionConstPtr(new CloudScanConfig::ParamDescription<bool>("publish_ortho_cloud", "bool", 0, "Publish orthographically-aligned cloud", "", &CloudScanConfig::publish_ortho_cloud)));
+//#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
+      __param_descriptions__.push_back(CloudScanConfig::AbstractParamDescriptionConstPtr(new CloudScanConfig::ParamDescription<bool>("publish_ortho_cloud", "bool", 0, "Publish orthographically-aligned cloud", "", &CloudScanConfig::publish_ortho_cloud)));
 //#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"
       __min__.min_height = -10.0;
 //#line 259 "/opt/ros/fuerte/stacks/dynamic_reconfigure/src/dynamic_reconfigure/parameter_generator.py"

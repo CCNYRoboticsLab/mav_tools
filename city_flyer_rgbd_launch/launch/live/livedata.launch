@@ -5,7 +5,7 @@ hight level.
 -->
 
 <launch>
-  <arg name="publish_cloud" value="true"/>
+  <arg name="publish_cloud" value="false"/>
 
   #### Asctec Autopilot And Proc ###############################################
 

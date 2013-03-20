@@ -5,7 +5,7 @@ data to a bag file.
 
 <launch>
 
-  <arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/wp_01.bag"/>
+  <arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/st_548_02.bag"/>
 
   #### Nodelet manager #########################################################
 
@@ -18,7 +18,7 @@ data to a bag file.
 
   #### Data Recording ##########################################################
 
-  <include file="$(find city_flyer_rgbd_launch)/launch/misc/record_pose.launch">
+  <include file="$(find city_flyer_rgbd_launch)/launch/misc/record_pose+rgbd_data.launch">
     <arg name="bag_name" value="$(arg bag_name)" />
   </include>
 

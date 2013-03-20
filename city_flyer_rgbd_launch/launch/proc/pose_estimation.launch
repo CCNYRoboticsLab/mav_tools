@@ -8,7 +8,7 @@ assembling all the different (partial) pose messages into a
 
   <node pkg="mav_odom_interface" type="odom_interface_node" name="odom_interface" 
     output="screen">
-    <param name="use_vo_yaw" value="true"/>
+    <param name="use_vo_yaw"    value="true" />  # false: if it should use imu/data
   </node>
   
    
