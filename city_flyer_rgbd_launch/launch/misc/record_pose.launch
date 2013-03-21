@@ -3,6 +3,6 @@
   <arg name="bag_name"/>
 
   <node pkg="rosbag" type="record" name="record" output="screen"
-    args="/mav/pose -O $(env HOME)/ros/bags/$(arg bag_name)"/>
+    args="/mav/pose /mav/cmd/pose -O $(arg bag_name)"/>
 
 </launch>

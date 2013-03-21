@@ -6,17 +6,15 @@
   <arg name="calib_path" default="$(find ccny_rgbd)/data/calibration_asus_xtion_pro"/> 
   <arg name="unwarp" default="false"/> 
   <arg name="publish_cloud" default="false"/>
-  <arg name="image_mode" default="5" />
-  <arg name="depth_mode" default="5"/>
+  <arg name="image_mode" default="3" />
+  <arg name="depth_mode" default="3"/>
   # modes: 
   #             2 (640x480 VGA 30Hz)
   #             5 (320x240 QVGA 30Hz)
   #             8 (160x120 QQVGA 30Hz)
   
   <include file="$(find ccny_openni_launch)/launch/openni.launch">
-     <arg name="manager_name" value="$(arg manager_name)" />
      <arg name="calib_path"   value="$(arg calib_path)" />
-     <arg name="unwarp"       value="$(arg unwarp)" />
      <arg name="image_mode"   value="$(arg image_mode)" />
      <arg name="depth_mode"   value="$(arg depth_mode)" />
      <arg name="publish_cloud"   value="$(arg publish_cloud)" />

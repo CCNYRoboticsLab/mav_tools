@@ -24,8 +24,8 @@
     #  ORB, SURF, or GFT (Good features to track)
     <param name="feature/detector_type"       value="$(arg detector_type)"/> 
     <param name="feature/smooth"              value="0"/>  # Gaussian filter (window size in px)
-    <param name="feature/max_range"           value="10"/>
-    <param name="feature/max_stdev"           value="0.30"/>
+    <param name="feature/max_range"           value="5"/>
+    <param name="feature/max_stdev"           value="0.03"/>
     <param name="feature/show_keypoints"      value="false"/>
     <param name="feature/publish_cloud"       value="true"/>
     <param name="feature/publish_covariances" value="false"/>
@@ -43,7 +43,7 @@
     #### registration: ICP Prob Model #################
 
     <param name="reg/ICPProbModel/max_iterations"            value="10"/>
-    <param name="reg/ICPProbModel/max_model_size"            value="10000"/>
+    <param name="reg/ICPProbModel/max_model_size"            value="3000"/>
     <param name="reg/ICPProbModel/n_nearest_neighbors"       value="4"/>
     <param name="reg/ICPProbModel/max_assoc_dist_mah"        value="10.0"/>
     <param name="reg/ICPProbModel/max_corresp_dist_eucl"     value="0.15"/>

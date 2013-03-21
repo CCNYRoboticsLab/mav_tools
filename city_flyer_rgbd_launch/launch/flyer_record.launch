@@ -5,7 +5,7 @@ data to a bag file.
 
 <launch>
 
-  <arg name="bag_name" value="lobby_01.bag"/>
+  <arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/st_548_03.bag"/>
 
   #### Nodelet manager #########################################################
 

@@ -8,6 +8,8 @@ recorded in a bag file.
   #arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/hallway_5th_floor_02.bag"/#
   <arg name="bag_name" value="$(env HOME)/ros/bags/rgbd/st_548_02.bag"/>
 
+  <arg name="calib_path" default="$(find ccny_rgbd)/data/calibration_asus_xtion_pro"/> 
+
   #### Nodelet manager #########################################################
 
   <node pkg="nodelet" type="nodelet" name="pelican_manager" 
@@ -16,10 +18,12 @@ recorded in a bag file.
   #### Data Playback #########################################################
 
   <include file="$(find ccny_openni_launch)/launch/openni_play.launch">
+    <arg name="calib_path"    value="$(arg calib_path)" />
     <arg name="bag_name"      value="$(arg bag_name)" />
     <arg name="publish_cloud" value="true" />
-    <arg name="unwarp"        value="false"/> 
+    <arg name="unwarp"        value="true"/> 
     <arg name="scale"         value="1.0"/>
+    <arg name="verbose"       value="true"/>
     <arg name="bag_rate"      value="1.0" />
     <arg name="bag_start"     value="50.0" /> # seconds
   </include>

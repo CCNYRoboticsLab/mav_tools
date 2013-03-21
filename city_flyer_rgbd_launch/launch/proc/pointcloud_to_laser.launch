@@ -1,7 +1,7 @@
 <launch>
   <arg name="manager_name" default="rgbd_manager"/>
   
-  ### Virtual (fake) laser from pointcloud  ##############33
+  ### Virtual (fake) laser from pointcloud  ##############
   <node pkg="nodelet" type="nodelet" name="videre_laser" args="load pointcloud_to_laserscan/CloudToScan $(arg manager_name)" output="screen" >
     <param name="min_height" type="double" value="0.4" />  # TODO:dynamic adjustment
     <param name="max_height" type="double" value="0.55" />

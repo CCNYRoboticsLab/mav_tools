@@ -5,7 +5,7 @@
 
   #### Virtual laser from point cloud ########  
   <include file="$(find city_flyer_rgbd_launch)/launch/proc/pointcloud_to_laser.launch" />
-  
+
   #### Map server ###############
   <node name="map_server" pkg="map_server" type="map_server" 
     output="screen"
