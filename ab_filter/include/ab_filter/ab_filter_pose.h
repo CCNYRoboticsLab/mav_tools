@@ -1,7 +1,7 @@
 /*
  *  Alpha-Beta Filter
  *  Copyright (C) 2011, CCNY Robotics Lab
- *  Ivan Dryanovski <ivan.dryanovski@gmail.com>
+ *  Roberto G. Valenti <robertogl.valenti@gmail.com>
  *
  *  http://robotics.ccny.cuny.edu
  *
@@ -43,7 +43,7 @@ class ABFilterPose
 #endif
 
   private:
-
+    
     // **** ROS-related
     ros::NodeHandle nh_;
     ros::NodeHandle nh_private_;
@@ -79,7 +79,7 @@ class ABFilterPose
 
     void initializeParams();
 
-    void poseCallback(const Pose::ConstPtr pose_msg);
+    void poseCallback(const Pose::ConstPtr&  pose_msg);
     void publishPose(const std_msgs::Header& header);
 
     // [0, 2pi)

@@ -89,11 +89,11 @@ void QuadJoyTeleop::initParams()
   cmd_thrust_scale_   = 100.0;  
 
   estop_button_    = 999;   
-  takeoff_button_  = 12;    // triangle
-  land_button_     = 14;    // X
-  engage_button_   = 15;    // square
-  pos_hold_button_ = 11;    // R1 (right trigger)
-  vel_hold_button_ = 10;    // L1 (left trigger)
+  takeoff_button_  = 0;   // triangle
+  land_button_     = 2;   // X
+  engage_button_   = 3;   // square
+  pos_hold_button_ = 5;    // R1 (right trigger top)
+  vel_hold_button_ = 7;   // R2 (right trigger bottom)
 
   roll_axis_   = 2;
   pitch_axis_  = 3;

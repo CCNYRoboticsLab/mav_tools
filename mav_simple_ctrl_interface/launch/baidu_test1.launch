@@ -1,0 +1,91 @@
+<!--
+Launches the control interfaces, which receive commands from the various
+inputs (joystick, rviz, planners, etc) and relay that to the flyer 
+interface.
+-->
+
+<launch>
+
+
+#### Data Playback #########################################################
+
+  <arg name="roberto_moving_with_tango_2015-06-10-16-30-06.bag"/>
+  <param name="use_sim_time" value="true"/>
+  
+  <remap from="tango/pose_stamped" to="/mav/tango/pose_stamped"/>	
+  <node pkg="rosbag" type="play" name="play" output="log"
+    args="$(env HOME)/ros/bags/roberto_moving_with_tango_2015-06-10-16-30-06.bag --queue=10 --delay=10 --start=0 --clock"/>
+
+########## robot model ####################
+  <param name="robot_description" command="cat $(find pelican_urdf)/data/pelican_tango.xml" />
+  
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher">
+    <param name="publish_frequency" value="50.0"/>
+  </node>
+
+########### ODOM INTERFACE ##########################
+
+  <node pkg="mav_odom_interface" type="odom_interface_node" name="odom_interface" 
+    output="screen">
+  </node>
+
+############ AB FILTER FOR VELOCITY ESTIMATION ##################
+
+ <node pkg="ab_filter" type="ab_filter_pose_node" name="ab_filter_pose" 
+    output="screen">
+   <param name="publish_unfiltered" value="true"/>
+   <param name="alpha" value="0.9"/>
+   <param name="beta" value="0.2"/>
+</node>
+
+#### MAV CTRL Interface #######################################
+  #todo: nodelet?
+
+  <node pkg="mav_simple_ctrl_interface" type="ctrl_interface_node" name="ctrl_interface" 
+    output="screen">
+
+    <param name="direct_pos_ctrl" value="true"/>
+    <param name="fixed_frame" value="/odom"/>
+
+
+
+############## RVIZ FOR VISUALIZATION AND CMD GOAL ##########################
+
+</node>
+    	
+    <node pkg="rviz" type="rviz" name="rviz">
+    
+    <remap from="/move_base_simple/goal" to="/mav/goal2D_rviz"/>
+
+
+  </node>
+
+
+<!--
+Launches the ROS joystick driver and the joystick teleop
+intefrace. The interface assumes a PS3 controller. If you want
+connect over bluetooth, you should execute start_ps3.sh in the
+quad_joy_teleop/launch folder prior to launching this.
+-->
+
+
+  <node pkg="joy" type="joy_node" name="joy_node" output="screen">
+    <param name="dev" value="/dev/input/js4"/>
+  </node>
+
+  <node pkg="quad_joy_teleop" type="quad_joy_teleop_node" name="quad_joy_teleop_node" 
+    output="screen">
+
+    <param name="controller" value="PS3"/>
+
+  </node>
+  
+
+ <include file="$(find city_flyer_rgbd_launch)/launch/live/flyer_test.launch"/> 
+</launch>
+
+<!--
+Launches the control interfaces, which receive commands from the various
+inputs (joystick, rviz, planners, etc) and relay that to the flyer 
+interface.
+-->

@@ -1,7 +1,7 @@
 /*
  *  Alpha-Beta Filter
  *  Copyright (C) 2011, CCNY Robotics Lab
- *  Ivan Dryanovski <ivan.dryanovski@gmail.com>
+ *  Roberto G. Valenti <robertogl.valenti@gmail.com>
  *
  *  http://robotics.ccny.cuny.edu
  *
@@ -42,18 +42,18 @@ ABFilterPose::ABFilterPose(ros::NodeHandle nh, ros::NodeHandle nh_private):
   pose_publisher_  = nh_mav.advertise<Pose>(
     "pose_f", 10);
   twist_publisher_  = nh_mav.advertise<Twist>(
-    "twist_f", 10);
+    "vel_f", 10);
 
   if (publish_unfiltered_)
   {
     twist_unf_publisher_ = nh_mav.advertise<Twist>(
-      "twist_unf", 10);
+      "vel_unf", 10);
   }
 
   // **** register subscribers
 
   subscriber_ = nh_mav.subscribe(
-    "pose", 10, &ABFilterPose::poseCallback, this);
+    "/mav/pose", 10, &ABFilterPose::poseCallback, this);
 }
 
 ABFilterPose::~ABFilterPose()
@@ -73,7 +73,7 @@ void ABFilterPose::initializeParams()
 }
 
 
-void ABFilterPose::poseCallback(const Pose::ConstPtr pose_msg)
+void ABFilterPose::poseCallback(const Pose::ConstPtr&  pose_msg)
 {
   ros::Time time = pose_msg->header.stamp;
 
@@ -100,7 +100,7 @@ void ABFilterPose::poseCallback(const Pose::ConstPtr pose_msg)
   {
     double dt = (time - last_update_time_).toSec();
     double bdt = beta_ / dt;
-
+    //printf("dt: %f \n", dt);
     if (publish_unfiltered_)
     {
       lin_vel_unf_ = (pos_reading - pos_) / dt;

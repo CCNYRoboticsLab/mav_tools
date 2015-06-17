@@ -196,24 +196,24 @@ FlyerInterface::FlyerInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
   // Synchronize inputs. Topic subscriptions happen on demand in the connection callback.
   int queue_size = 5;
 
-  rgbd_pose_subscriber_.reset(new PoseStampedSubscriber(
-    nh_mav, "rgbd_pose_f", queue_size));
-  rgbd_vel_subscriber_.reset(new TwistStampedSubscriber(
-    nh_mav, "rgbd_vel_f", queue_size));
+  pose_subscriber_.reset(new PoseStampedSubscriber(
+    nh_mav, "/mav/pose_f", queue_size));
+  vel_subscriber_.reset(new TwistStampedSubscriber(
+    nh_mav, "/mav/vel_f", queue_size));
 
-  rgbd_sync_.reset(new Synchronizer(
-    SyncPolicy(queue_size), *rgbd_pose_subscriber_, *rgbd_vel_subscriber_));
-  rgbd_sync_->registerCallback(boost::bind(&FlyerInterface::rgbdCallback, this, _1, _2));
+  pose_sync_.reset(new Synchronizer(
+    SyncPolicy(queue_size), *pose_subscriber_, *vel_subscriber_));
+  pose_sync_->registerCallback(boost::bind(&FlyerInterface::poseCallback, this, _1, _2));
 
 
-  laser_pose_subscriber_.reset(new PoseStampedSubscriber(
-    nh_mav, "laser_pose_f", queue_size));
-  laser_vel_subscriber_.reset(new TwistStampedSubscriber(
-    nh_mav, "laser_vel_f", queue_size));
+  //laser_pose_subscriber_.reset(new PoseStampedSubscriber(
+  //  nh_mav, "laser_pose_f", queue_size));
+  //laser_vel_subscriber_.reset(new TwistStampedSubscriber(
+  //  nh_mav, "laser_vel_f", queue_size));
 
-  laser_sync_.reset(new Synchronizer(
-    SyncPolicy(queue_size), *laser_pose_subscriber_, *laser_vel_subscriber_));
-  laser_sync_->registerCallback(boost::bind(&FlyerInterface::laserCallback, this, _1, _2));
+  // laser_sync_.reset(new Synchronizer(
+  //   SyncPolicy(queue_size), *laser_pose_subscriber_, *laser_vel_subscriber_));
+  //laser_sync_->registerCallback(boost::bind(&FlyerInterface::laserCallback, this, _1, _2));
 
   height_subscriber_ = nh_mav.subscribe(
     "laser_height_f", 10, &FlyerInterface::heightCallback, this);
@@ -360,7 +360,7 @@ void FlyerInterface::laserCallback(
   comm_.sendPacket(MAV_POSE2D_PKT_ID, packet);
 }
 
-void FlyerInterface::rgbdCallback(
+void FlyerInterface::poseCallback(
   const PoseStamped::ConstPtr  pose_msg,
   const TwistStamped::ConstPtr twist_msg)
 {

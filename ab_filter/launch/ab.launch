@@ -1,0 +1,21 @@
+<!--
+Launches the ab_filter_pose for a test.
+-->
+
+<launch>
+
+<arg name="roberto_moving_with_tango_2015-06-10-16-30-06.bag"/>
+  <param name="use_sim_time" value="true"/>
+  
+  <remap from="tango/pose_stamped" to="/mav/pose"/>	
+  <node pkg="rosbag" type="play" name="play" output="log"
+    args="$(env HOME)/ros/bags/roberto_moving_with_tango_2015-06-10-16-30-06.bag --queue=10 --delay=10 --start=0 --clock"/>
+
+ <node pkg="ab_filter" type="ab_filter_pose_node" name="ab_filter_pose" 
+    output="screen">
+   <param name="publish_unfiltered" value="true"/>
+   <param name="alpha" value="0.9"/>
+   <param name="beta" value="0.2"/>
+</node>
+
+</launch>

@@ -1,7 +1,7 @@
 /*
  *  MAV Ctrl Interface
  *  Copyright (C) 2011, CCNY Robotics Lab
- *  Ivan Dryanovski <ivan.dryanovski@gmail.com>
+ *  Roberto G. Valenti <robertogl.valenti@gmail.com>
  *
  *  http://robotics.ccny.cuny.edu
  *
@@ -339,7 +339,7 @@ void CtrlInterface::goal2Dcallback(const geometry_msgs::PoseStamped::ConstPtr go
       // **** direct pos. ctrl - no obstacle avoidance
       ROS_INFO("Goal(2d) received. Executing direct poistion control to goal.");
 
-      // set 2D porion of pose to the new goal
+      // set 2D portion of pose to the new goal
       des_pose_.pose.position.x = goal_fixed_frame.pose.position.x;
       des_pose_.pose.position.y = goal_fixed_frame.pose.position.y;
 

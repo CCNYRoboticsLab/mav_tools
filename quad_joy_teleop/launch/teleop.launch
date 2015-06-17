@@ -1,7 +1,7 @@
 <launch>
 
   <node pkg="joy" type="joy_node" name="joy_node" output="screen">
-    <param name="dev" value="/dev/input/js0"/>
+    <param name="dev" value="/dev/input/js4"/>
   </node>
 
   <node pkg="quad_joy_teleop" type="quad_joy_teleop_node" name="quad_joy_teleop_node" 
