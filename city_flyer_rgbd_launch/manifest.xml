@@ -1,10 +1,10 @@
 <package>
-  <description brief="city_flyer_launch">
+  <description brief="city_flyer_rgbd_launch">
 
-     city_flyer_launch
+     city_flyer_rgbd_launch
 
   </description>
-  <author>Ivan Dryanovski</author>
+  <author>Roberto G. Valenti</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/city_flyer_launch</url>

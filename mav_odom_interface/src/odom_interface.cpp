@@ -47,11 +47,12 @@ OdomInterface::OdomInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
     "odom", 1);
   path_pub_ = nh_mav.advertise<nav_msgs::Path>(
     "path_odom", 1);
-
+  yaw_publisher_ = nh_mav.advertise<std_msgs::Float32>(
+      "pose_yaw", 1);
   // **** ros subscribers
 
   tango_pose_subscriber_ = nh_mav.subscribe(
-    "tango/pose_stamped", 1, &OdomInterface::tangoPoseCallback, this);
+    "tango/pose_stamped", 10, &OdomInterface::tangoPoseCallback, this);
   imu_subscriber_ = nh_mav.subscribe(
     "imu/data", 1, &OdomInterface::imuCallback, this);
   height_subscriber_ = nh_mav.subscribe(
@@ -71,52 +72,11 @@ void OdomInterface::tangoPoseCallback(const PoseStamped::ConstPtr& tango_pose_ms
 {
   pose_mutex_.lock();
   PoseStamped tango_pose;
-  tf::Transform odomo2tango;
-  tango_pose.pose = tango_pose_msg->pose;
-  tango_pose.header = tango_pose_msg->header;
-  tango_pose.header.stamp = tango_pose_msg->header.stamp;
-  tango_pose.header.frame_id = "odom";
-  tf::poseMsgToTF(tango_pose.pose, odomo2tango);
-
-  ros::Time now = ros::Time::now(); 
-  tf::StampedTransform tango2base;
-  tango2base.setIdentity();
-  
-  try
-    {
-      tf_listener_.waitForTransform(
-	base_frame_, sensor_frame_, now, ros::Duration(5.0));
-
-      tf_listener_.lookupTransform(base_frame_, sensor_frame_, now, tango2base);
-      		
-    }
-    catch (tf::TransformException ex)
-    {
-      ROS_WARN("Could not transform tango pose %s", ex.what());
-      return;
-    } 
-  //tango motion, measured in the base frame
-  
- 
-
-  tf_broadcaster_.sendTransform(
-    tf::StampedTransform(tango2base,
-      ros::Time::now(), base_frame_, sensor_frame_));
-
-  //tango2base.setIdentity();
-  
-  // apply the transf
-  odom2base_ = odomo2tango * tango2base.inverse();
-
-  // update the pose header
-  pose_.header.stamp = tango_pose_msg->header.stamp; 
- 
-  //tf::Transform odom2base;
-  tf_broadcaster_.sendTransform(
-    tf::StampedTransform(odom2base_,
-      ros::Time::now(), fixed_frame_, base_frame_));
-  // publish the pose
-  tf::poseTFToMsg(odom2base_, pose_.pose);
+  //tf::Transform odomo2tango;
+  pose_.pose = tango_pose_msg->pose;
+  pose_.header = tango_pose_msg->header;
+  pose_.header.stamp = ros::Time::now();//tango_pose_msg->header.stamp;
+  pose_.header.frame_id = "odom";
  
   publishPose();
   publishPath();
@@ -144,6 +104,66 @@ void OdomInterface::tangoPoseCallback(const PoseStamped::ConstPtr& tango_pose_ms
   //publishPose();
 
   //pose_mutex_.unlock();
+}
+
+void OdomInterface::transformPose()
+{
+  ros::Time now = ros::Time::now();
+  tf::Transform odomo2tango;	 
+  tf::StampedTransform tango2base;
+  tf::poseMsgToTF(pose_.pose, odomo2tango);	
+  tango2base.setIdentity();
+  ros::NodeHandle node;
+  
+    try
+      {
+        tf_listener_.waitForTransform(
+	  base_frame_, sensor_frame_, now, ros::Duration(5.0));
+
+        tf_listener_.lookupTransform(base_frame_, sensor_frame_, now, tango2base);
+        //ROS_WARN("TRANSFORMING");		
+      }
+      catch (tf::TransformException ex)
+      {
+        ROS_WARN("Could not transform tango pose %s", ex.what());
+        return;
+      } 
+  //tango motion, measured in the base frame
+  //tf_broadcaster_.sendTransform(
+  //  tf::StampedTransform(tango2base,
+  //    ros::Time::now(), base_frame_, sensor_frame_));
+
+  //tango2base.setIdentity();
+  
+  // apply the transf
+  odom2base_ = odomo2tango * tango2base.inverse();
+  
+  // RotZ: 90 deg rotation around z to have "base_link" oriented as "odom"
+  tf::Transform RotZ;
+  tf::Vector3 tran(0.0, 0.0, 0.16);
+  RotZ.setOrigin(tran);
+  tf::Quaternion qz(0.0, 0.0, 0.707107, -0.707107);
+  RotZ.setRotation(qz);
+  odom2base_ = RotZ * odom2base_; 
+  // update the pose header
+  //pose_.header.stamp = tango_pose_msg->header.stamp; 
+ 
+  //tf::Transform odom2base;
+  tf_broadcaster_.sendTransform(
+    tf::StampedTransform(odom2base_,
+      ros::Time::now(), fixed_frame_, base_frame_));
+  // publish the pose
+  tf::poseTFToMsg(odom2base_, pose_.pose);
+
+  tf::Quaternion q_pose;
+  tf::quaternionMsgToTF(pose_.pose.orientation, q_pose);
+  MyMatrix m(q_pose);
+  double r, p, y;
+  m.getRPY(r, p, y);
+
+  std_msgs::Float32 yaw_msg;
+  yaw_msg.data = y;
+  yaw_publisher_.publish(yaw_msg);
 }
 
 void OdomInterface::imuCallback (const sensor_msgs::Imu::ConstPtr& imu_msg)
@@ -195,10 +215,19 @@ void OdomInterface::heightCallback (const mav_msgs::Height::ConstPtr& height_msg
 void OdomInterface::publishPose()
 {
   // **** create a copy of the pose and publish as shared pointer
+  transformPose();
+  
+  /******   test ****
+  double r, p, y;
+  tf::Quaternion q_pose;
+  tf::quaternionMsgToTF(pose_.pose.orientation, q_pose);
+  MyMatrix m_pose(q_pose);
+  m_pose.getRPY(r, p, y);
+  ROS_INFO(" ROLL, PITCH, YAW: %f, %f, %f", r, p, y);
+  */
 
   geometry_msgs::PoseStamped::Ptr pose_message = 
-    boost::make_shared<geometry_msgs::PoseStamped>(pose_);
-
+      boost::make_shared<geometry_msgs::PoseStamped>(pose_);
   pose_publisher_.publish(pose_message);
 
   // **** broadcast the transform
@@ -218,7 +247,7 @@ void OdomInterface::publishPose()
   // TODO: add velociyies from ab filters
   
   nav_msgs::Odometry::Ptr odom_message = 
-    boost::make_shared<nav_msgs::Odometry>();
+      boost::make_shared<nav_msgs::Odometry>();
 
   odom_message->header = pose_.header;
    //odom_message->child_frame_id = "tango"; //AFTER-ROBERTO//

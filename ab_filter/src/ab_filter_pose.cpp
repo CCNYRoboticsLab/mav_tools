@@ -82,7 +82,7 @@ void ABFilterPose::poseCallback(const Pose::ConstPtr&  pose_msg)
 
   tf::Quaternion q_reading;
   tf::quaternionMsgToTF(pose_msg->pose.orientation, q_reading);
-
+  q_   = q_reading;
   // first message
   if(!initialized_)
   {
@@ -112,9 +112,9 @@ void ABFilterPose::poseCallback(const Pose::ConstPtr&  pose_msg)
     tf::Vector3 r_pos = pos_reading - pos_pred;
     pos_ = pos_pred + alpha_ * r_pos;
     lin_vel_ += bdt * r_pos;
-
-    // **** calculate orientation
-
+    
+    /**** calculate orientation
+	
     tf::Vector3 w = dt * ang_vel_;
     tf::Quaternion qw;
     qw.setRPY(w.getX(), w.getY(), w.getZ());
@@ -134,12 +134,12 @@ void ABFilterPose::poseCallback(const Pose::ConstPtr&  pose_msg)
     tf::Vector3 ang_vel_pred = ang_vel_;
     
     ang_vel_ = (1.0 - beta_) * ang_vel_pred + beta_ * ang_vel_meas;
-
+    
     // **** calculate unfiltered velocity 
     if (publish_unfiltered_)
     {
       ang_vel_unf_ = ang_vel_meas;
-    }
+    }*/
   }
 
   last_update_time_ = time;
@@ -153,7 +153,7 @@ void ABFilterPose::publishPose(const std_msgs::Header& header)
 
   Pose::Ptr pose = boost::make_shared<Pose>();
   pose->header = header;
-
+  pose->header.stamp = ros::Time::now();
   tf::pointTFToMsg(pos_, pose->pose.position);
   tf::quaternionTFToMsg(q_, pose->pose.orientation);
 
@@ -163,19 +163,22 @@ void ABFilterPose::publishPose(const std_msgs::Header& header)
 
   Twist::Ptr twist = boost::make_shared<Twist>();
   twist->header = header;
-  
+  twist->header.stamp = ros::Time::now();
+
   tf::vector3TFToMsg(lin_vel_, twist->twist.linear);
   tf::vector3TFToMsg(ang_vel_, twist->twist.angular);
-
-  twist_publisher_.publish(twist);
-
+  if (pose->pose.position.x != NULL && pose->pose.position.x != NULL && pose->pose.position.z != NULL)
+  {
+    ROS_INFO("PUBLISH TWIST");
+    twist_publisher_.publish(twist);
+  }
   // **** publish unfiltered twist message
 
   if (publish_unfiltered_)
   {
     Twist::Ptr twist_unf = boost::make_shared<Twist>();
     twist_unf->header = header;
-
+    twist_unf->header.stamp = ros::Time::now();
     tf::vector3TFToMsg(lin_vel_unf_, twist_unf->twist.linear);
     tf::vector3TFToMsg(ang_vel_unf_, twist_unf->twist.angular);
 

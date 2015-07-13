@@ -1,7 +1,7 @@
 /*
  *  AscTec Autopilot Interface
  *  Copyright (C) 2011, CCNY Robotics Lab
- *  Ivan Dryanovski <ivan.dryanovski@gmail.com>
+ *  Ivan Dryanovski & Roberto G. Valenti <ivan.dryanovski@gmail.com>, <robertogl.valenti@gmail.com>
  *
  *  http://robotics.ccny.cuny.edu
  *
@@ -108,10 +108,10 @@ FlyerInterface::FlyerInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
   if (publish_pose_)
   { 
     pose_publisher_ = nh_mav.advertise<geometry_msgs::PoseStamped>(
-      "pose", 10);
+      "pose_kf", 10);
   }
   vel_publisher_ = nh_mav.advertise<geometry_msgs::TwistStamped>(
-    "vel", 10);
+    "vel_kf", 10);
   imu_publisher_ = nh_mav.advertise<sensor_msgs::Imu>(
     "imu/data", 10);
   flight_state_publisher_ = nh_mav.advertise<std_msgs::UInt8>(
@@ -194,7 +194,7 @@ FlyerInterface::FlyerInterface(ros::NodeHandle nh, ros::NodeHandle nh_private):
   // **** register subscribers
 
   // Synchronize inputs. Topic subscriptions happen on demand in the connection callback.
-  int queue_size = 5;
+  int queue_size = 10;
 
   pose_subscriber_.reset(new PoseStampedSubscriber(
     nh_mav, "/mav/pose_f", queue_size));
@@ -293,7 +293,7 @@ void FlyerInterface::initializeParams()
   if (!nh_private_.getParam ("enable_kf_z", enable_kf_z_))
     enable_kf_z_ = "true";
   if (!nh_private_.getParam ("enable_kf_yaw", enable_kf_yaw_))
-    enable_kf_yaw_ = "true";
+    enable_kf_yaw_ = "false";
 
   if (!nh_private_.getParam ("q_x", q_x_))
     q_x_ = 0.083;
@@ -340,7 +340,7 @@ void FlyerInterface::initializeParams()
   ctrl_cfg_packet_.ctrl_mode_yaw_rate = ctrl_mode_yaw_rate;
   ctrl_cfg_packet_.ctrl_mode_thrust   = ctrl_mode_thrust;
 }
-
+/*
 void FlyerInterface::laserCallback(
   const PoseStamped::ConstPtr  pose_msg,
   const TwistStamped::ConstPtr twist_msg)
@@ -359,25 +359,29 @@ void FlyerInterface::laserCallback(
   ROS_DEBUG("Sending MAV_POSE2D_PKT packet");
   comm_.sendPacket(MAV_POSE2D_PKT_ID, packet);
 }
-
+*/
 void FlyerInterface::poseCallback(
   const PoseStamped::ConstPtr  pose_msg,
   const TwistStamped::ConstPtr twist_msg)
 {
-  ROS_INFO("VO Callback function");
+  //ROS_INFO("VO Callback function");
   MAV_POSE2D_PKT packet_2d;
   MAV_HEIGHT_PKT packet_z;
-  
+  //ROS_INFO("KF YAW, %d", enable_kf_yaw_);
   //**** fills packet_2d
   packet_2d.x = pose_msg->pose.position.x;
   packet_2d.y = pose_msg->pose.position.y;
-
+  ROS_INFO("packet x, %f", packet_2d.x);
+  ROS_INFO("packet y, %f", packet_2d.y);
   packet_2d.vx = twist_msg->twist.linear.x;
   packet_2d.vy = twist_msg->twist.linear.y;
-
-  packet_2d.yaw = tf::getYaw(pose_msg->pose.orientation);
+  //ROS_INFO("packet vx, %f", packet_2d.vx);
+  //ROS_INFO("packet vy, %f", packet_2d.vy);
+  packet_2d.yaw = tf::getYaw(pose_msg->pose.orientation);// - 1.5707963;
+  ROS_INFO("POSE YAW BEFORE, %f", packet_2d.yaw);
   normalizeSIAngle2Pi(&packet_2d.yaw);
-  
+  ROS_INFO("POSE YAW AFTER , %f", packet_2d.yaw);
+  //ROS_INFO("Q and R, %f, %f", q_x_, r_x_);
   //**** fills packet_z
   packet_z.z  = pose_msg->pose.position.z;
   packet_z.vz = twist_msg->twist.linear.z;
@@ -697,7 +701,7 @@ void FlyerInterface::processPoseData(uint8_t * buf, uint32_t bufLength)
     tf::Quaternion q = tf::createQuaternionFromRPY(
       mav_pose_pkt->roll, mav_pose_pkt->pitch, mav_pose_pkt->yaw);
     tf::quaternionTFToMsg(q, pose_msg->pose.orientation);
-
+    ROS_INFO("IMU YAW, %f", mav_pose_pkt->yaw);
     // **** publish the pose message
 
     pose_publisher_.publish(pose_msg);
@@ -776,7 +780,7 @@ void FlyerInterface::processImuData(uint8_t * buf, uint32_t bufLength)
   imu_msg->angular_velocity.y = data->pitch_rate;  
   imu_msg->angular_velocity.z = data->yaw_rate;
 
-  // copy over accerlerations
+  // copy over accelerations
 
   imu_msg->linear_acceleration.x = data->acc_x;
   imu_msg->linear_acceleration.y = data->acc_y;

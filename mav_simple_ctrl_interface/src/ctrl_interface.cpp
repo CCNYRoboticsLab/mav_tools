@@ -212,11 +212,11 @@ void CtrlInterface::cmdTimerCallback(const ros::TimerEvent& event)
 {
   boost::mutex::scoped_lock(mutex_);
 
-  printf("pub pose timer\n");
+  //printf("pub pose timer\n");
 
   if (ctrl_type_ == mav::PositionCtrl) 
   {
-    printf("pub pose\n");
+   // printf("pub pose\n");
     publishCmdPose();
   }
 }

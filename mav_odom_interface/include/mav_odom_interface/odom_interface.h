@@ -4,7 +4,7 @@
 #include <ros/ros.h>
 #include <boost/thread/mutex.hpp>
 #include <sensor_msgs/Imu.h>
-#include <std_msgs/Float64.h>
+#include <std_msgs/Float32.h>
 #include <tf/transform_datatypes.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
@@ -43,13 +43,14 @@ class OdomInterface
     ros::Publisher  pose_publisher_;
     ros::Publisher  odom_publisher_;
     ros::Publisher  path_pub_;
+    ros::Publisher  yaw_publisher_;
 
     ros::Subscriber tango_pose_subscriber_;
     ros::Subscriber imu_subscriber_;
     ros::Subscriber height_subscriber_;
     tf::TransformBroadcaster tf_broadcaster_;
     tf::TransformListener    tf_listener_;
-
+ 
     nav_msgs::Path path_msg_;
 	
     // **** parameters
@@ -73,7 +74,7 @@ class OdomInterface
     void tangoPoseCallback(const PoseStamped::ConstPtr& tango_pose_msg);
     void imuCallback (const sensor_msgs::Imu::ConstPtr& imu_msg);
     void heightCallback (const mav_msgs::Height::ConstPtr& height_msg);
-
+    void transformPose(); 	
     void publishPose();
     void publishPath();
    

@@ -61,7 +61,7 @@ class ABFilterPose
     tf::Vector3 pos_;
     tf::Vector3 lin_vel_;
     tf::Vector3 lin_vel_unf_;
-
+    geometry_msgs::PoseStamped pose_;
     tf::Quaternion q_;
     tf::Vector3 ang_vel_;
     tf::Vector3 ang_vel_unf_;
