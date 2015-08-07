@@ -1,0 +1,20 @@
+<!--
+Launches all ROS components which run on the ground station:
+visualization, teleop interfaces.
+-->
+
+<launch>
+
+
+  #### Visualization #################################################
+
+  <include file="$(find city_flyer_rgbd_launch)/launch/misc/visualization.launch"/>
+
+  #### Teleop ########################################################
+
+  <include file="$(find city_flyer_rgbd_launch)/launch/misc/teleop.launch"/>
+
+</launch>
+
+
+

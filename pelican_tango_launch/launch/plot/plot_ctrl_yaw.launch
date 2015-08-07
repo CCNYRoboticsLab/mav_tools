@@ -1,0 +1,6 @@
+<launch>
+
+  <node pkg="rxtools" type="rxplot" name="plot" 
+    args="/mav/debug/yaw"/>
+
+</launch>

@@ -327,9 +327,11 @@ void FlyerInterface::initializeParams()
   int ctrl_mode_roll, ctrl_mode_pitch, ctrl_mode_yaw_rate, ctrl_mode_thrust;
 
   if (!nh_private_.getParam ("ctrl/ctrl_mode_roll", ctrl_mode_roll))
-    ctrl_mode_roll = MAV_CTRL_MODE_DIRECT;
+   ctrl_mode_roll = MAV_CTRL_MODE_DIRECT;
+    ROS_INFO("CTRL_MODE %d",ctrl_mode_roll);
   if (!nh_private_.getParam ("ctrl/ctrl_mode_pitch", ctrl_mode_pitch))
     ctrl_mode_pitch = MAV_CTRL_MODE_DIRECT;
+    ROS_INFO("CTRL_MODE_PITCH %d",ctrl_mode_pitch);
   if (!nh_private_.getParam ("ctrl/ctrl_mode_yaw_rate", ctrl_mode_yaw_rate))
     ctrl_mode_yaw_rate = MAV_CTRL_MODE_DIRECT;
   if (!nh_private_.getParam ("ctrl/ctrl_mode_thrust", ctrl_mode_thrust))

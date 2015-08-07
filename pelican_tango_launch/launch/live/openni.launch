@@ -1,0 +1,24 @@
+<!-- Launch OpenNI driver and process the data -->
+<launch>
+
+  <!-- Parameters -->
+  <arg name="manager_name" value="rgbd_manager"/>
+  <arg name="calib_path" default="$(find ccny_rgbd)/data/calibration_asus_xtion_pro"/> 
+  
+  <!-- Nodelet manager -->
+  <node pkg="nodelet" type="nodelet" name="$(arg manager_name)" args="manager"
+        output="log"/>
+
+  <!-- Driver nodelet -->      
+  <include file="$(find ccny_openni_launch)/launch/include/device.launch">       
+     <arg name="manager_name" value="$(arg manager_name)" />
+     <arg name="calib_path"   value="$(arg calib_path)" />
+  </include>
+            
+  <!-- RGBD processing -->
+  <include file="$(find ccny_openni_launch)/launch/include/proc.launch">       
+     <arg name="manager_name" value="$(arg manager_name)" />
+     <arg name="calib_path"   value="$(arg calib_path)" />
+  </include>
+
+</launch>

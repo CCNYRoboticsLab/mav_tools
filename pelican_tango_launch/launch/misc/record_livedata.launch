@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="bag_name"/>
+
+  <node pkg="rosbag" type="record" name="record" output="screen"
+    args="/mav/imu 
+          /mav/state
+          /mav/vel
+          /scan
+          /mav/cmd_joy/vel
+          /mav/goal2D_rviz
+          /mav/debug/cmd/yaw
+          /mav/debug/yaw
+          -O $(env HOME)/ros/bags/$(arg bag_name)"/>
+
+</launch>

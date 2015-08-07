@@ -1,0 +1,28 @@
+<!--
+Launches the entire CityFlyer system.
+-->
+
+<launch>
+
+  #### Nodelet manager #########################################################
+
+  <node pkg="nodelet" type="nodelet" name="pelican_manager" 
+    args="manager" output="screen" />
+
+  #### Data Aquisition #########################################################
+
+  <include file="$(find pelican_tango_launch)/launch/live/livedata.launch"/>
+
+  #### Data Processing #########################################################
+
+  <include file="$(find pelican_tango_launch)/launch/proc/procdata.launch"/>
+  
+  #### Tango live data streaming #########################################################
+  
+  <node pkg="ros_tango" type="run_tango_pose_node.sh" name="ros_tango" output="screen"> 
+  </node>
+
+</launch>
+
+
+

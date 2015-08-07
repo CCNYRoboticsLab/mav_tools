@@ -1,3 +1,6 @@
+<!-- TEST 
+-->
+
 <launch>
   <node pkg="flyer_interface" type="flyer_interface_node" name="flyer_interface" 
     output="screen">
@@ -6,7 +9,7 @@
 
     ## general control parameters #############
 
-    <param name="ctrl/ctrl_mode_roll"     value="0"/>
+    <param name="ctrl/ctrl_mode_roll"     value="2"/>
     <param name="ctrl/ctrl_mode_pitch"    value="2"/>
     <param name="ctrl/ctrl_mode_yaw_rate" value="2"/>
     <param name="ctrl/ctrl_mode_thrust"   value="2"/>
@@ -14,14 +17,14 @@
     <param name="ctrl/cmd_roll_limit"     value="0.15"/>
     <param name="ctrl/cmd_pitch_limit"    value="0.15"/>
     <param name="ctrl/cmd_yaw_rate_limit" value="1.0"/>
-    <param name="ctrl/cmd_thrust_limit"   value="60.0"/>
+    <param name="ctrl/cmd_thrust_limit"   value="70.0"/>
 
     #### PID height 
 
-    <param name="ctrl/pid_height/k_p"  value="23"/>
+    <param name="ctrl/pid_height/k_p"  value="25"/>
     <param name="ctrl/pid_height/k_i"  value="5"/>
-    <param name="ctrl/pid_height/k_d"  value="20"/>
-    <param name="ctrl/pid_height/bias" value="53"/>
+    <param name="ctrl/pid_height/k_d"  value="13"/>
+    <param name="ctrl/pid_height/bias" value="48.5"/>
 
     #### PID position xy
 
@@ -79,36 +82,6 @@
 
   </node>
 
-  #### Nodelet manager #########################################################
-
-  <node pkg="nodelet" type="nodelet" name="pelican_manager" 
-    args="manager" output="screen" />
-
-  #### Hokuyo laser ############################################################
-
-  <include file="$(find city_flyer_launch)/launch/live/hokuyo_270deg1.launch"/>
-
-  #### URDF model ##############################################################
-
-  <include file="$(find city_flyer_launch)/launch/proc/model.launch"/>
-
-  #### Height estimation #######################################################
-
-  <include file="$(find city_flyer_launch)/launch/proc/laser_height_estimation.launch"/>
-
-  #### laser projection estimation ############################################
-
-  <include file="$(find city_flyer_launch)/launch/proc/laser_projection.launch"/>
-
-  #### Scan matching ###########################################################
-  
-  <include file="$(find city_flyer_launch)/launch/proc/laser_scan_matcher.launch"/>
-
-  #### Simple planner  ######################################################
-
-  <node pkg="quad_simple_planner" type="quad_simple_planner_node" name="quad_simple_planner" 
-    output="screen">
-
-  </node>
+ 
 
 </launch>
